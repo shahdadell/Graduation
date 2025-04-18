@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:graduation_project/Profile_screen/bloc/profile_bloc.dart';
-import 'package:graduation_project/Profile_screen/bloc/profile_event.dart';
-import 'package:graduation_project/Profile_screen/bloc/profile_state.dart';
+import 'package:graduation_project/Profile_screen/UI/Addresses/addresses_screen.dart';
+import 'package:graduation_project/Profile_screen/UI/Profile/edit_profile_screen.dart';
+import 'package:graduation_project/Profile_screen/UI/Profile/profile_widgets.dart';
+import 'package:graduation_project/Profile_screen/bloc/Address/Address_bloc.dart';
+import 'package:graduation_project/Profile_screen/bloc/Profile/profile_bloc.dart';
+import 'package:graduation_project/Profile_screen/bloc/Profile/profile_event.dart';
+import 'package:graduation_project/Profile_screen/bloc/Profile/profile_state.dart';
 import 'package:graduation_project/Profile_screen/data/auth_utils.dart';
+import 'package:graduation_project/Profile_screen/data/repo/Address_repo.dart';
 import 'package:graduation_project/Profile_screen/data/repo/profile_repo.dart';
 import 'package:graduation_project/Theme/theme.dart';
-import 'package:graduation_project/Profile_screen/UI/edit_profile_screen.dart';
-import 'package:graduation_project/Profile_screen/UI/profile_widgets.dart';
 import 'package:graduation_project/local_data/shared_preference.dart';
 import 'package:graduation_project/Main_Screen/main_screen.dart';
 
@@ -30,20 +33,24 @@ class ProfileScreen extends StatelessWidget {
               child: CircularProgressIndicator(color: MyTheme.orangeColor),
             ),
           );
-        } else if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
+        } else if (snapshot.hasError ||
+            !snapshot.hasData ||
+            snapshot.data == null) {
           return Scaffold(
             appBar: _buildAppBar(context, textTheme),
             body: Center(
               child: Text(
                 "Error loading user ID or not logged in",
-                style: textTheme.titleMedium?.copyWith(color: MyTheme.grayColor2),
+                style:
+                    textTheme.titleMedium?.copyWith(color: MyTheme.grayColor2),
               ),
             ),
           );
         } else {
           final userId = snapshot.data!.toString();
           return BlocProvider(
-            create: (context) => ProfileBloc(ProfileRepo())..add(FetchProfileEvent(userId)),
+            create: (context) =>
+                ProfileBloc(ProfileRepo())..add(FetchProfileEvent(userId)),
             child: Scaffold(
               appBar: _buildAppBar(context, textTheme),
               body: Container(
@@ -59,13 +66,16 @@ class ProfileScreen extends StatelessWidget {
                   builder: (context, state) {
                     if (state is ProfileLoading) {
                       return Center(
-                        child: CircularProgressIndicator(color: MyTheme.orangeColor),
+                        child: CircularProgressIndicator(
+                            color: MyTheme.orangeColor),
                       );
                     } else if (state is ProfileLoaded) {
+                      print('ProfileLoaded state reached, rendering UI with My Addresses button');
                       final profile = state.profile.data;
                       return SingleChildScrollView(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.w, vertical: 30.h),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -86,7 +96,8 @@ class ProfileScreen extends StatelessWidget {
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: MyTheme.orangeColor,
-                                  padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 8.h),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 40.w, vertical: 8.h),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12.r),
                                   ),
@@ -107,8 +118,9 @@ class ProfileScreen extends StatelessWidget {
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: MyTheme.orangeColor, // لون مختلف للتسجيل الخروج
-                                  padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 8.h),
+                                  backgroundColor: MyTheme.orangeColor,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 40.w, vertical: 8.h),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12.r),
                                   ),
@@ -130,16 +142,20 @@ class ProfileScreen extends StatelessWidget {
                           children: [
                             Text(
                               "Error: ${state.message}",
-                              style: textTheme.titleMedium?.copyWith(color: MyTheme.redColor),
+                              style: textTheme.titleMedium
+                                  ?.copyWith(color: MyTheme.redColor),
                             ),
                             SizedBox(height: 20.h),
                             ElevatedButton(
                               onPressed: () {
-                                context.read<ProfileBloc>().add(FetchProfileEvent(userId));
+                                context
+                                    .read<ProfileBloc>()
+                                    .add(FetchProfileEvent(userId));
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: MyTheme.orangeColor,
-                                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 20.w, vertical: 10.h),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12.r),
                                 ),
@@ -156,11 +172,14 @@ class ProfileScreen extends StatelessWidget {
                     return Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          context.read<ProfileBloc>().add(FetchProfileEvent(userId));
+                          context
+                              .read<ProfileBloc>()
+                              .add(FetchProfileEvent(userId));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: MyTheme.orangeColor,
-                          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.w, vertical: 10.h),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.r),
                           ),
@@ -183,31 +202,39 @@ class ProfileScreen extends StatelessWidget {
 
   PreferredSizeWidget _buildAppBar(BuildContext context, TextTheme textTheme) {
     return AppBar(
-       leading: null,
-      // InkWell(
+      // leading: InkWell(
       //   onTap: () => Navigator.pop(context),
       //   child: Padding(
       //     padding: EdgeInsets.all(12.w),
-      //     child: Icon(Icons.arrow_back_ios, color: MyTheme.whiteColor, size: 24.w),
+      //     child: Icon(
+      //       Icons.arrow_back_ios_rounded,
+      //       color: MyTheme.whiteColor,
+      //       size: 24.w,
+      //     ),
       //   ),
       // ),
       title: Text(
         "My Profile",
-        style: textTheme.displayLarge,
+        style: MyTheme.lightTheme.textTheme.displayLarge?.copyWith(
+          fontSize: 22.sp,
+          fontWeight: FontWeight.bold,
+          shadows: [
+            Shadow(
+              color: MyTheme.grayColor3,
+              blurRadius: 3.r,
+              offset: Offset(1, 1),
+            ),
+          ],
+        ),
       ),
       centerTitle: true,
       backgroundColor: MyTheme.orangeColor,
-      // elevation: 4,
-      // shadowColor: Colors.black.withOpacity(0.3),
-      // flexibleSpace: Container(
-      //   decoration: BoxDecoration(
-      //     gradient: LinearGradient(
-      //       colors: [MyTheme.orangeColor, Colors.orange[400]!],
-      //       begin: Alignment.topLeft,
-      //       end: Alignment.bottomRight,
-      //     ),
-      //   ),
-      // ),
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(20.r),
+        ),
+      ),
     );
   }
 
@@ -236,6 +263,40 @@ class ProfileScreen extends StatelessWidget {
           buildEditableField(context, "Name", nameController, Icons.person),
           buildEditableField(context, "Email", emailController, Icons.email),
           buildEditableField(context, "Phone", phoneController, Icons.phone),
+          SizedBox(height: 20.h),
+          Align(
+            alignment: Alignment.center,
+            child: ElevatedButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddressesScreen(),
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.location_on,
+                color: MyTheme.whiteColor,
+                size: 20.w,
+              ),
+              label: Text(
+                "My Addresses",
+                style: TextStyle(
+                  color: MyTheme.whiteColor,
+                  fontSize: 16.sp,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: MyTheme.orangeColor,
+                padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                elevation: 3,
+              ),
+            ),
+          ),
         ],
       ),
     );

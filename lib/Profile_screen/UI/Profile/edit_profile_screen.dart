@@ -2,19 +2,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:graduation_project/Profile_screen/bloc/profile_bloc.dart';
-import 'package:graduation_project/Profile_screen/bloc/profile_event.dart';
-import 'package:graduation_project/Profile_screen/bloc/profile_state.dart';
+import 'package:graduation_project/Profile_screen/bloc/Profile/profile_bloc.dart';
+import 'package:graduation_project/Profile_screen/bloc/Profile/profile_event.dart';
+import 'package:graduation_project/Profile_screen/bloc/Profile/profile_state.dart';
 import 'package:graduation_project/Theme/theme.dart';
-import 'package:graduation_project/Profile_screen/UI/profile_widgets.dart';
-import '../data/repo/profile_repo.dart';
+import 'package:graduation_project/Profile_screen/UI/Profile/profile_widgets.dart';
+import '../../data/repo/profile_repo.dart';
 
 class EditProfileScreen extends StatefulWidget {
   static const String routeName = '/edit-profile-screen';
   final String userId;
   final dynamic profile;
 
-  const EditProfileScreen({super.key, required this.userId, required this.profile});
+  const EditProfileScreen(
+      {super.key, required this.userId, required this.profile});
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
@@ -28,9 +29,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.profile?.usersName ?? '');
-    _emailController = TextEditingController(text: widget.profile?.usersEmail ?? '');
-    _phoneController = TextEditingController(text: widget.profile?.usersPhone ?? '');
+    _nameController =
+        TextEditingController(text: widget.profile?.usersName ?? '');
+    _emailController =
+        TextEditingController(text: widget.profile?.usersEmail ?? '');
+    _phoneController =
+        TextEditingController(text: widget.profile?.usersPhone ?? '');
   }
 
   @override
@@ -101,7 +105,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               }
               return SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -111,20 +116,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       SizedBox(height: 20.h),
                       ElevatedButton(
                         onPressed: () {
-                          if (_validateFields()) { // التحقق من الحقول قبل الإرسال
+                          if (_validateFields()) {
+                            // التحقق من الحقول قبل الإرسال
                             context.read<ProfileBloc>().add(
-                              UpdateProfileEvent(
-                                widget.userId,
-                                _nameController.text,
-                                _emailController.text,
-                                _phoneController.text,
-                              ),
-                            );
+                                  UpdateProfileEvent(
+                                    widget.userId,
+                                    _nameController.text,
+                                    _emailController.text,
+                                    _phoneController.text,
+                                  ),
+                                );
                           }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: MyTheme.orangeColor,
-                          padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 12.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 40.w, vertical: 12.h),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.r),
                           ),
@@ -148,11 +155,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   PreferredSizeWidget _buildAppBar(BuildContext context, TextTheme textTheme) {
     return AppBar(
-      leading: InkWell(
+      leading:  InkWell(
         onTap: () => Navigator.pop(context),
         child: Padding(
           padding: EdgeInsets.all(12.w),
-          child: Icon(Icons.arrow_back_ios, color: MyTheme.whiteColor, size: 24.w),
+          child: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: MyTheme.whiteColor,
+            size: 24.w,
+          ),
         ),
       ),
       title: Text(
@@ -193,9 +204,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildEditableField(context, "Name", _nameController, Icons.person, isEditing: true),
-          buildEditableField(context, "Email", _emailController, Icons.email, isEditing: true),
-          buildEditableField(context, "Phone", _phoneController, Icons.phone, isEditing: true),
+          buildEditableField(context, "Name", _nameController, Icons.person,
+              isEditing: true),
+          buildEditableField(context, "Email", _emailController, Icons.email,
+              isEditing: true),
+          buildEditableField(context, "Phone", _phoneController, Icons.phone,
+              isEditing: true),
         ],
       ),
     );

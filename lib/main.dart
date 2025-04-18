@@ -1,4 +1,3 @@
-// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,10 +18,11 @@ import 'package:graduation_project/auth/OTP/otp_screen.dart';
 import 'package:graduation_project/auth/forget_password/OTP_Forget_Password/otp_screen.dart';
 import 'package:graduation_project/auth/sign_up_screen/sign_up_screen.dart';
 import 'package:graduation_project/auth/sing_in_screen/sign_in_screen.dart';
-import 'package:graduation_project/home_screen/UI/SearchFieldWidget/SearchFieldWidget.dart';
 import 'package:graduation_project/home_screen/UI/SearchFieldWidget/SearchScreen.dart';
-import 'package:graduation_project/Profile_screen/UI/profile_screen.dart';
-import 'package:graduation_project/Profile_screen/UI/edit_profile_screen.dart';
+import 'package:graduation_project/Profile_screen/UI/Profile/profile_screen.dart';
+import 'package:graduation_project/Profile_screen/UI/Profile/edit_profile_screen.dart';
+import 'package:graduation_project/Profile_screen/bloc/Address/Address_bloc.dart'; // أضفنا الـ AddressBloc
+import 'package:graduation_project/Profile_screen/data/repo/Address_repo.dart'; // أضفنا الـ AddressRepo
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,8 +44,11 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => HomeBloc()),
           BlocProvider(
-              create: (context) =>
-                  CartBloc(cartRepo: CartRepo())), // CartBloc global
+            create: (context) => CartBloc(cartRepo: CartRepo()),
+          ),
+          BlocProvider(
+            create: (context) => AddressBloc(AddressRepo()), // أضفنا الـ AddressBloc هنا
+          ),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

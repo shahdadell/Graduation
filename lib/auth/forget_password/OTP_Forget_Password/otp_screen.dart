@@ -11,7 +11,8 @@ class OtpScreenForgetPassword extends StatefulWidget {
   const OtpScreenForgetPassword({super.key});
 
   @override
-  State<OtpScreenForgetPassword> createState() => _OtpScreenForgetPasswordState();
+  State<OtpScreenForgetPassword> createState() =>
+      _OtpScreenForgetPasswordState();
 }
 
 class _OtpScreenForgetPasswordState extends State<OtpScreenForgetPassword> {
@@ -145,43 +146,48 @@ class _OtpScreenForgetPasswordState extends State<OtpScreenForgetPassword> {
                 ElevatedButton(
                   onPressed: _isButtonEnabled
                       ? () async {
-                    print("OTP Continue Button Pressed");
+                          print("OTP Continue Button Pressed");
 
-                    if (formKey.currentState!.validate()) {
-                      String otpCode =
-                          "${otpController1.text}${otpController2.text}${otpController3.text}${otpController4.text}${otpController5.text}";
+                          if (formKey.currentState!.validate()) {
+                            String otpCode =
+                                "${otpController1.text}${otpController2.text}${otpController3.text}${otpController4.text}${otpController5.text}";
 
-                      print("Entered OTP: $otpCode");
+                            print("Entered OTP: $otpCode");
 
-                      var response = await apiManager.verifyCodeForgetPassword(email, otpCode);
+                            var response = await apiManager
+                                .verifyCodeForgetPassword(email, otpCode);
 
-                      print("API Response: ${response.status}, Message: ${response.message}");
+                            print(
+                                "API Response: ${response.status}, Message: ${response.message}");
 
-                      if (response.status == "success") {
-                        print("Verification Successful! Navigating to Reset Password...");
-                        Navigator.of(context).pushReplacementNamed(
-                          ResetPassword.routName,
-                          arguments: email,
-                        );
-                      } else {
-                        print("Verification Failed: ${response.message}");
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(response.message ?? "Verification Failed"),
-                            backgroundColor: Colors.redAccent,
-                            behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
-                      }
-                    }
-                  }
+                            if (response.status == "success") {
+                              print(
+                                  "Verification Successful! Navigating to Reset Password...");
+                              Navigator.of(context).pushReplacementNamed(
+                                ResetPassword.routName,
+                                arguments: email,
+                              );
+                            } else {
+                              print("Verification Failed: ${response.message}");
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(response.message ??
+                                      "Verification Failed"),
+                                  backgroundColor: Colors.redAccent,
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                  ),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            }
+                          }
+                        }
                       : null,
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 14.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 40.w, vertical: 14.h),
                     backgroundColor: MyTheme.orangeColor,
                     disabledBackgroundColor: Colors.grey[400],
                     shape: RoundedRectangleBorder(

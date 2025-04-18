@@ -26,7 +26,8 @@ class DioProvider {
         return handler.next(options);
       },
       onResponse: (response, handler) {
-        print('Response [${response.statusCode}] from: ${response.requestOptions.uri}');
+        print(
+            'Response [${response.statusCode}] from: ${response.requestOptions.uri}');
         print('Response Headers: ${response.headers}');
         print('Raw Response: ${response.data}');
 
@@ -104,7 +105,8 @@ class DioProvider {
     String contentType = 'application/x-www-form-urlencoded',
   }) async {
     try {
-      final preparedHeaders = await _prepareHeaders(headers, contentType: contentType);
+      final preparedHeaders =
+          await _prepareHeaders(headers, contentType: contentType);
       print('GET Request to: ${AppEndpoints.baseUrl}$endpoint');
       print('Headers: $preparedHeaders');
       print('Data: $data');
@@ -122,15 +124,20 @@ class DioProvider {
       return response;
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout) {
-        throw Exception('Connection timeout while making GET request to $endpoint');
+        throw Exception(
+            'Connection timeout while making GET request to $endpoint');
       } else if (e.type == DioExceptionType.receiveTimeout) {
-        throw Exception('Receive timeout while making GET request to $endpoint');
+        throw Exception(
+            'Receive timeout while making GET request to $endpoint');
       } else if (e.type == DioExceptionType.badResponse) {
-        throw Exception('Bad response from $endpoint: ${e.response?.statusCode} - ${e.response?.data}');
+        throw Exception(
+            'Bad response from $endpoint: ${e.response?.statusCode} - ${e.response?.data}');
       } else if (e.type == DioExceptionType.connectionError) {
-        throw Exception('Connection error: Please check your internet connection');
+        throw Exception(
+            'Connection error: Please check your internet connection');
       } else {
-        throw Exception('DioException [${e.type}]: ${e.message} - ${e.response?.data}');
+        throw Exception(
+            'DioException [${e.type}]: ${e.message} - ${e.response?.data}');
       }
     } catch (e) {
       throw Exception('Error making GET request to $endpoint: $e');
@@ -144,7 +151,8 @@ class DioProvider {
     String contentType = 'multipart/form-data',
   }) async {
     try {
-      final preparedHeaders = await _prepareHeaders(headers, contentType: contentType);
+      final preparedHeaders =
+          await _prepareHeaders(headers, contentType: contentType);
       print('POST Request to: ${AppEndpoints.baseUrl}$endpoint');
       print('Headers: $preparedHeaders');
       print('Data: $data');
@@ -160,15 +168,20 @@ class DioProvider {
       return response;
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout) {
-        throw Exception('Connection timeout while making POST request to $endpoint');
+        throw Exception(
+            'Connection timeout while making POST request to $endpoint');
       } else if (e.type == DioExceptionType.receiveTimeout) {
-        throw Exception('Receive timeout while making POST request to $endpoint');
+        throw Exception(
+            'Receive timeout while making POST request to $endpoint');
       } else if (e.type == DioExceptionType.badResponse) {
-        throw Exception('Bad response from $endpoint: ${e.response?.statusCode} - ${e.response?.data}');
+        throw Exception(
+            'Bad response from $endpoint: ${e.response?.statusCode} - ${e.response?.data}');
       } else if (e.type == DioExceptionType.connectionError) {
-        throw Exception('Connection error: Please check your internet connection');
+        throw Exception(
+            'Connection error: Please check your internet connection');
       } else {
-        throw Exception('DioException [${e.type}]: ${e.message} - ${e.response?.data}');
+        throw Exception(
+            'DioException [${e.type}]: ${e.message} - ${e.response?.data}');
       }
     } catch (e) {
       throw Exception('Error making POST request to $endpoint: $e');
@@ -182,7 +195,8 @@ class DioProvider {
     String contentType = 'application/json',
   }) async {
     try {
-      final preparedHeaders = await _prepareHeaders(headers, contentType: contentType);
+      final preparedHeaders =
+          await _prepareHeaders(headers, contentType: contentType);
       print('PUT Request to: ${AppEndpoints.baseUrl}$endpoint');
       print('Headers: $preparedHeaders');
       print('Data: $data');
@@ -195,15 +209,20 @@ class DioProvider {
       return response;
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout) {
-        throw Exception('Connection timeout while making PUT request to $endpoint');
+        throw Exception(
+            'Connection timeout while making PUT request to $endpoint');
       } else if (e.type == DioExceptionType.receiveTimeout) {
-        throw Exception('Receive timeout while making PUT request to $endpoint');
+        throw Exception(
+            'Receive timeout while making PUT request to $endpoint');
       } else if (e.type == DioExceptionType.badResponse) {
-        throw Exception('Bad response from $endpoint: ${e.response?.statusCode} - ${e.response?.data}');
+        throw Exception(
+            'Bad response from $endpoint: ${e.response?.statusCode} - ${e.response?.data}');
       } else if (e.type == DioExceptionType.connectionError) {
-        throw Exception('Connection error: Please check your internet connection');
+        throw Exception(
+            'Connection error: Please check your internet connection');
       } else {
-        throw Exception('DioException [${e.type}]: ${e.message} - ${e.response?.data}');
+        throw Exception(
+            'DioException [${e.type}]: ${e.message} - ${e.response?.data}');
       }
     } catch (e) {
       throw Exception('Error making PUT request to $endpoint: $e');
@@ -217,7 +236,8 @@ class DioProvider {
     String contentType = 'application/json',
   }) async {
     try {
-      final preparedHeaders = await _prepareHeaders(headers, contentType: contentType);
+      final preparedHeaders =
+          await _prepareHeaders(headers, contentType: contentType);
       print('DELETE Request to: ${AppEndpoints.baseUrl}$endpoint');
       print('Headers: $preparedHeaders');
       print('Data: $data');
@@ -230,15 +250,20 @@ class DioProvider {
       return response;
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout) {
-        throw Exception('Connection timeout while making DELETE request to $endpoint');
+        throw Exception(
+            'Connection timeout while making DELETE request to $endpoint');
       } else if (e.type == DioExceptionType.receiveTimeout) {
-        throw Exception('Receive timeout while making DELETE request to $endpoint');
+        throw Exception(
+            'Receive timeout while making DELETE request to $endpoint');
       } else if (e.type == DioExceptionType.badResponse) {
-        throw Exception('Bad response from $endpoint: ${e.response?.statusCode} - ${e.response?.data}');
+        throw Exception(
+            'Bad response from $endpoint: ${e.response?.statusCode} - ${e.response?.data}');
       } else if (e.type == DioExceptionType.connectionError) {
-        throw Exception('Connection error: Please check your internet connection');
+        throw Exception(
+            'Connection error: Please check your internet connection');
       } else {
-        throw Exception('DioException [${e.type}]: ${e.message} - ${e.response?.data}');
+        throw Exception(
+            'DioException [${e.type}]: ${e.message} - ${e.response?.data}');
       }
     } catch (e) {
       throw Exception('Error making DELETE request to $endpoint: $e');

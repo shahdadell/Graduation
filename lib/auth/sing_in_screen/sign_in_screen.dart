@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/App_Images/app_images.dart';
-import 'package:graduation_project/Profile_screen/bloc/profile_bloc.dart';
-import 'package:graduation_project/Profile_screen/bloc/profile_event.dart';
-import 'package:graduation_project/Profile_screen/bloc/profile_state.dart';
+import 'package:graduation_project/Profile_screen/bloc/Profile/profile_bloc.dart';
+import 'package:graduation_project/Profile_screen/bloc/Profile/profile_event.dart';
+import 'package:graduation_project/Profile_screen/bloc/Profile/profile_state.dart';
 import 'package:graduation_project/Profile_screen/data/repo/profile_repo.dart';
 import 'package:graduation_project/Theme/dialog_utils.dart';
 import 'package:graduation_project/Theme/dialogs.dart';
@@ -54,21 +54,24 @@ class _SignInScreenState extends State<SignInScreen> {
         await for (final profileState in profileBloc.stream) {
           if (profileState is ProfileLoaded) {
             final username = profileState.profile.data?.usersName;
-            await AppLocalStorage.cacheData(AppLocalStorage.userNameKey, username);
+            await AppLocalStorage.cacheData(
+                AppLocalStorage.userNameKey, username);
             break;
           } else if (profileState is ProfileError) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Failed to load profile: ${profileState.message}')),
+              SnackBar(
+                  content:
+                      Text('Failed to load profile: ${profileState.message}')),
             );
             break;
           }
         }
       }
       Navigator.of(context).pop(); // إغلاق الـ loading dialog
-      pushWithReplacement(context, const NavBarWidget()); // استخدمت pushWithReplacement
+      pushWithReplacement(
+          context, const NavBarWidget()); // استخدمت pushWithReplacement
     }
   }
-
 
   @override
   void dispose() {
@@ -108,12 +111,14 @@ class _SignInScreenState extends State<SignInScreen> {
             await for (final profileState in profileBloc.stream) {
               if (profileState is ProfileLoaded) {
                 final username = profileState.profile.data?.usersName;
-                await AppLocalStorage.cacheData(AppLocalStorage.userNameKey, username);
+                await AppLocalStorage.cacheData(
+                    AppLocalStorage.userNameKey, username);
                 break; // اخرج من اللوب لما الـ Profile يتحمل
               } else if (profileState is ProfileError) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Failed to load profile: ${profileState.message}'),
+                    content:
+                        Text('Failed to load profile: ${profileState.message}'),
                   ),
                 );
                 break;
@@ -121,7 +126,8 @@ class _SignInScreenState extends State<SignInScreen> {
             }
 
             // بعد ما الـ username يتخزن، انقل للـ NavBarWidget
-            pushAndRemoveUntil(context, const NavBarWidget()); // استخدمت pushAndRemoveUntil
+            pushAndRemoveUntil(
+                context, const NavBarWidget()); // استخدمت pushAndRemoveUntil
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('User ID not found')),
@@ -133,7 +139,8 @@ class _SignInScreenState extends State<SignInScreen> {
         appBar: AppBar(
           leading: InkWell(
             onTap: () {
-              pushWithReplacement(context, const MainScreen()); // استخدمت pushWithReplacement
+              pushWithReplacement(
+                  context, const MainScreen()); // استخدمت pushWithReplacement
             },
             child: Padding(
               padding: EdgeInsets.all(10.w),
@@ -188,7 +195,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         return "E-mail is required";
                       }
                       bool emailValid = RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(value);
                       if (!emailValid) {
                         return 'Please Enter Valid Email';
@@ -319,5 +326,5 @@ class _SignInScreenState extends State<SignInScreen> {
 AuthRepositoryContract injectAuthRepositoryContract() {
   return AuthRepositoryImpl(
       remoteDataSource:
-      AuthRemoteDataSourceImpl(apiManager: ApiManager.getInstance()));
+          AuthRemoteDataSourceImpl(apiManager: ApiManager.getInstance()));
 }

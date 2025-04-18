@@ -23,10 +23,11 @@ class AppEndpoints {
   static const String viewCart = "cart/view.php";
   static const String cartDelete = "cart/delet.php";
 
- //Favourite
+  //Favourite
   static const String addToFavourite = "favorite/add.php";
   static const String viewFavourite = "favorite/view.php";
-  static const String deleteFromFavouritebyId = "favorite/deletefromfavroite.php";
+  static const String deleteFromFavouritebyId =
+      "favorite/deletefromfavroite.php";
   static const String removeFavourite = "favorite/remove.php";
 
   //Profile
@@ -36,4 +37,9 @@ class AppEndpoints {
   //Search
   static const String search = "items/search.php";
 
+  //Addresses
+static const String addAddress = 'address/add.php';
+static const String viewAddresses = 'address/view.php';
+static const String deleteAddress = 'address/delet.php';
+static const String editAddress = 'address/edit.php';
 }
