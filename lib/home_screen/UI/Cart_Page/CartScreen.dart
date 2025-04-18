@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:graduation_project/Home_Screen/UI/home_page/home_screen.dart';
 import 'package:graduation_project/Theme/theme.dart';
 import 'package:graduation_project/home_screen/bloc/Cart/cart_bloc.dart';
@@ -59,7 +60,7 @@ class _CartScreenState extends State<CartScreen> {
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     padding:
-                        EdgeInsets.symmetric(horizontal: 30.w, vertical: 12.h),
+                    EdgeInsets.symmetric(horizontal: 30.w, vertical: 12.h),
                     elevation: 5,
                     shadowColor: MyTheme.orangeColor.withOpacity(0.4),
                   ),
@@ -73,6 +74,11 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ],
             ),
+          ).animate().fadeIn(duration: 600.ms).slideY(
+            begin: 0.2,
+            end: 0.0,
+            duration: 600.ms,
+            curve: Curves.easeOut,
           ),
         ),
       );
@@ -110,6 +116,7 @@ class _CartScreenState extends State<CartScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.r),
                 ),
+                elevation: 6,
                 duration: const Duration(seconds: 2),
               ),
             );
@@ -130,6 +137,7 @@ class _CartScreenState extends State<CartScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.r),
                 ),
+                elevation: 6,
                 duration: const Duration(seconds: 2),
               ),
             );
@@ -149,6 +157,7 @@ class _CartScreenState extends State<CartScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.r),
                 ),
+                elevation: 6,
                 duration: const Duration(seconds: 2),
               ),
             );
@@ -169,6 +178,7 @@ class _CartScreenState extends State<CartScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.r),
                 ),
+                elevation: 6,
                 duration: const Duration(seconds: 2),
               ),
             );
@@ -193,12 +203,17 @@ class _CartScreenState extends State<CartScreen> {
                         Text(
                           'Loading your cart...',
                           style:
-                              MyTheme.lightTheme.textTheme.titleSmall?.copyWith(
+                          MyTheme.lightTheme.textTheme.titleSmall?.copyWith(
                             fontSize: 18.sp,
                             color: MyTheme.mauveColor,
                           ),
                         ),
                       ],
+                    ).animate().fadeIn(duration: 600.ms).slideY(
+                      begin: 0.2,
+                      end: 0.0,
+                      duration: 600.ms,
+                      curve: Curves.easeOut,
                     ),
                   );
                 } else if (state is FetchCartSuccessState) {
@@ -259,6 +274,11 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                         ),
                       ],
+                    ).animate().fadeIn(duration: 600.ms).slideY(
+                      begin: 0.2,
+                      end: 0.0,
+                      duration: 600.ms,
+                      curve: Curves.easeOut,
                     ),
                   );
                 }
@@ -274,12 +294,17 @@ class _CartScreenState extends State<CartScreen> {
                       Text(
                         'Loading your cart...',
                         style:
-                            MyTheme.lightTheme.textTheme.titleSmall?.copyWith(
+                        MyTheme.lightTheme.textTheme.titleSmall?.copyWith(
                           fontSize: 18.sp,
                           color: MyTheme.mauveColor,
                         ),
                       ),
                     ],
+                  ).animate().fadeIn(duration: 600.ms).slideY(
+                    begin: 0.2,
+                    end: 0.0,
+                    duration: 600.ms,
+                    curve: Curves.easeOut,
                   ),
                 );
               },
@@ -308,6 +333,7 @@ class _CartScreenState extends State<CartScreen> {
         style: MyTheme.lightTheme.textTheme.displayLarge?.copyWith(
           fontSize: 22.sp,
           fontWeight: FontWeight.bold,
+          color: MyTheme.whiteColor,
           shadows: [
             Shadow(
               color: MyTheme.grayColor3,
@@ -316,6 +342,11 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ],
         ),
+      ).animate().fadeIn(duration: 400.ms).slideY(
+        begin: 0.1,
+        end: 0.0,
+        duration: 400.ms,
+        curve: Curves.easeOut,
       ),
       centerTitle: true,
       backgroundColor: MyTheme.orangeColor,
@@ -335,10 +366,9 @@ class _CartScreenState extends State<CartScreen> {
 
     return Column(
       children: [
-        // قائمة العناصر
         Expanded(
           child: ListView.builder(
-            padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 10.w),
+            padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 16.w),
             itemCount: localCartItems.length,
             itemBuilder: (context, index) {
               final item = localCartItems[index];
@@ -363,250 +393,256 @@ class _CartScreenState extends State<CartScreen> {
                       int.tryParse(item.cartQuantity ?? '0') ?? 0;
                   double totalItemPrice = itemPrice * itemQuantity;
 
-                  return Container(
-                    margin: EdgeInsets.symmetric(vertical: 6.h),
-                    padding: EdgeInsets.all(10.w),
-                    decoration: BoxDecoration(
-                      color: MyTheme.whiteColor,
-                      borderRadius: BorderRadius.circular(12.r),
-                      border: Border.all(
-                        color: MyTheme.grayColor.withOpacity(0.3),
-                        width: 1,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: MyTheme.grayColor3.withOpacity(0.3),
-                          blurRadius: 6.r,
-                          spreadRadius: 1.r,
-                          offset: Offset(0, 2),
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(12.r),
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 6.h),
+                      padding: EdgeInsets.all(10.w),
+                      decoration: BoxDecoration(
+                        color: MyTheme.whiteColor,
+                        borderRadius: BorderRadius.circular(12.r),
+                        border: Border.all(
+                          color: MyTheme.grayColor.withOpacity(0.3),
+                          width: 1,
                         ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8.r),
-                          child: item.itemsImage != null
-                              ? CachedNetworkImage(
-                                  imageUrl: item.itemsImage!,
-                                  width: 70.w,
-                                  height: 60.h,
-                                  fit: BoxFit.cover,
-                                  memCacheHeight: (60.h).toInt(),
-                                  memCacheWidth: (60.w).toInt(),
-                                  placeholder: (context, url) => Center(
-                                    child: CircularProgressIndicator(
-                                      color: MyTheme.orangeColor,
-                                      strokeWidth: 2.w,
-                                    ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: MyTheme.grayColor3.withOpacity(0.3),
+                            blurRadius: 8.r,
+                            spreadRadius: 1.r,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8.r),
+                            child: item.itemsImage != null
+                                ? CachedNetworkImage(
+                              imageUrl: item.itemsImage!,
+                              width: 70.w,
+                              height: 60.h,
+                              fit: BoxFit.cover,
+                              memCacheHeight: (60.h).toInt(),
+                              memCacheWidth: (60.w).toInt(),
+                              placeholder: (context, url) => Center(
+                                child: CircularProgressIndicator(
+                                  color: MyTheme.orangeColor,
+                                  strokeWidth: 2.w,
+                                ),
+                              ),
+                              errorWidget: (context, url, error) => Icon(
+                                Icons.fastfood_rounded,
+                                size: 24.w,
+                                color: MyTheme.orangeColor,
+                              ),
+                            )
+                                : Icon(
+                              Icons.fastfood_rounded,
+                              size: 24.w,
+                              color: MyTheme.orangeColor,
+                            ),
+                          ),
+                          SizedBox(width: 12.w),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  item.itemsName ?? 'No Name',
+                                  style: MyTheme.lightTheme.textTheme.titleSmall
+                                      ?.copyWith(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: MyTheme.mauveColor,
                                   ),
-                                  errorWidget: (context, url, error) => Icon(
-                                    Icons.fastfood_rounded,
-                                    size: 24.w,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(height: 6.h),
+                                Text(
+                                  '${itemPrice.toStringAsFixed(2)} EGP',
+                                  style: MyTheme.lightTheme.textTheme.titleSmall
+                                      ?.copyWith(
+                                    fontSize: 12.sp,
+                                    color: MyTheme.greenColor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                                Text(
+                                  'Qty: $itemQuantity',
+                                  style: MyTheme.lightTheme.textTheme.bodySmall
+                                      ?.copyWith(
+                                    fontSize: 12.sp,
+                                    color: MyTheme.grayColor2,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                                Text(
+                                  'Total: ${totalItemPrice.toStringAsFixed(2)} EGP',
+                                  style: MyTheme.lightTheme.textTheme.titleSmall
+                                      ?.copyWith(
+                                    fontSize: 12.sp,
+                                    color: MyTheme.greenColor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  if (item.cartItemsid != null &&
+                                      (int.tryParse(item.cartQuantity ?? '0') ??
+                                          0) >
+                                          1) {
+                                    context
+                                        .read<CartBloc>()
+                                        .add(DeleteCartItemEvent(
+                                      userId: userId,
+                                      itemId: int.parse(item.cartItemsid!),
+                                    ));
+                                  } else if (item.cartItemsid != null) {
+                                    context
+                                        .read<CartBloc>()
+                                        .add(DeleteCartItemEvent(
+                                      userId: userId,
+                                      itemId: int.parse(item.cartItemsid!),
+                                    ));
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'Cannot decrease quantity: Missing item ID'),
+                                        backgroundColor: Colors.redAccent,
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(5.w),
+                                  decoration: BoxDecoration(
+                                    color: MyTheme.orangeColor.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(6.r),
+                                  ),
+                                  child: Icon(
+                                    Icons.remove_rounded,
+                                    size: 18.w,
                                     color: MyTheme.orangeColor,
                                   ),
-                                )
-                              : Icon(
-                                  Icons.fastfood_rounded,
-                                  size: 24.w,
-                                  color: MyTheme.orangeColor,
                                 ),
-                        ),
-                        SizedBox(width: 12.w),
-                        // التفاصيل
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                              ),
+                              SizedBox(width: 8.w),
                               Text(
-                                item.itemsName ?? 'No Name',
-                                style: MyTheme.lightTheme.textTheme.titleSmall
+                                item.cartQuantity ?? '0',
+                                style: MyTheme.lightTheme.textTheme.bodySmall
                                     ?.copyWith(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.bold,
                                   color: MyTheme.mauveColor,
                                 ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
                               ),
-                              SizedBox(height: 6.h),
-                              Text(
-                                '${itemPrice.toStringAsFixed(2)} EGP',
-                                style: MyTheme.lightTheme.textTheme.titleSmall
-                                    ?.copyWith(
-                                  fontSize: 12.sp,
-                                  color: MyTheme.greenColor,
-                                  fontWeight: FontWeight.w600,
+                              SizedBox(width: 8.w),
+                              GestureDetector(
+                                onTap: () {
+                                  if (item.cartItemsid != null) {
+                                    context.read<CartBloc>().add(AddToCartEvent(
+                                      userId: userId,
+                                      itemId: int.parse(item.cartItemsid!),
+                                      quantity: 1,
+                                    ));
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'Cannot increase quantity: Missing item ID'),
+                                        backgroundColor: Colors.redAccent,
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(5.w),
+                                  decoration: BoxDecoration(
+                                    color: MyTheme.orangeColor.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(6.r),
+                                  ),
+                                  child: Icon(
+                                    Icons.add_rounded,
+                                    size: 18.w,
+                                    color: MyTheme.orangeColor,
+                                  ),
                                 ),
                               ),
-                              SizedBox(height: 4.h),
-                              Text(
-                                'Qty: $itemQuantity',
-                                style: MyTheme.lightTheme.textTheme.bodySmall
-                                    ?.copyWith(
-                                  fontSize: 12.sp,
-                                  color: MyTheme.grayColor2,
-                                ),
-                              ),
-                              SizedBox(height: 4.h),
-                              Text(
-                                'Total: ${totalItemPrice.toStringAsFixed(2)} EGP',
-                                style: MyTheme.lightTheme.textTheme.titleSmall
-                                    ?.copyWith(
-                                  fontSize: 12.sp,
-                                  color: MyTheme.greenColor,
-                                  fontWeight: FontWeight.w600,
+                              SizedBox(width: 8.w),
+                              GestureDetector(
+                                onTap: isLoading
+                                    ? null
+                                    : () {
+                                  if (item.cartItemsid != null) {
+                                    context
+                                        .read<CartBloc>()
+                                        .add(DeleteCartItemEvent(
+                                      userId: userId,
+                                      itemId:
+                                      int.parse(item.cartItemsid!),
+                                    ));
+                                  } else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'Cannot remove item: Missing item ID'),
+                                        backgroundColor: Colors.redAccent,
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(5.w),
+                                  decoration: BoxDecoration(
+                                    color: MyTheme.redColor.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(6.r),
+                                  ),
+                                  child: isLoading
+                                      ? SizedBox(
+                                    width: 18.w,
+                                    height: 18.w,
+                                    child: CircularProgressIndicator(
+                                      color: MyTheme.redColor,
+                                      strokeWidth: 2.w,
+                                    ),
+                                  )
+                                      : Icon(
+                                    Icons.delete_rounded,
+                                    size: 18.w,
+                                    color: MyTheme.orangeColor,
+                                  ),
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                if (item.cartItemsid != null &&
-                                    (int.tryParse(item.cartQuantity ?? '0') ??
-                                            0) >
-                                        1) {
-                                  context
-                                      .read<CartBloc>()
-                                      .add(DeleteCartItemEvent(
-                                        userId: userId,
-                                        itemId: int.parse(item.cartItemsid!),
-                                      ));
-                                } else if (item.cartItemsid != null) {
-                                  context
-                                      .read<CartBloc>()
-                                      .add(DeleteCartItemEvent(
-                                        userId: userId,
-                                        itemId: int.parse(item.cartItemsid!),
-                                      ));
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                          'Cannot decrease quantity: Missing item ID'),
-                                      backgroundColor: Colors.redAccent,
-                                      duration: Duration(seconds: 2),
-                                    ),
-                                  );
-                                }
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(5.w),
-                                decoration: BoxDecoration(
-                                  color: MyTheme.orangeColor.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(6.r),
-                                ),
-                                child: Icon(
-                                  Icons.remove_rounded,
-                                  size: 18.w,
-                                  color: MyTheme.orangeColor,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 8.w),
-                            Text(
-                              item.cartQuantity ?? '0',
-                              style: MyTheme.lightTheme.textTheme.bodySmall
-                                  ?.copyWith(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.bold,
-                                color: MyTheme.mauveColor,
-                              ),
-                            ),
-                            SizedBox(width: 8.w),
-                            GestureDetector(
-                              onTap: () {
-                                if (item.cartItemsid != null) {
-                                  context.read<CartBloc>().add(AddToCartEvent(
-                                        userId: userId,
-                                        itemId: int.parse(item.cartItemsid!),
-                                        quantity: 1,
-                                      ));
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                          'Cannot increase quantity: Missing item ID'),
-                                      backgroundColor: Colors.redAccent,
-                                      duration: Duration(seconds: 2),
-                                    ),
-                                  );
-                                }
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(5.w),
-                                decoration: BoxDecoration(
-                                  color: MyTheme.orangeColor.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(6.r),
-                                ),
-                                child: Icon(
-                                  Icons.add_rounded,
-                                  size: 18.w,
-                                  color: MyTheme.orangeColor,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 8.w),
-                            GestureDetector(
-                              onTap: isLoading
-                                  ? null
-                                  : () {
-                                      if (item.cartItemsid != null) {
-                                        context
-                                            .read<CartBloc>()
-                                            .add(DeleteCartItemEvent(
-                                              userId: userId,
-                                              itemId:
-                                                  int.parse(item.cartItemsid!),
-                                            ));
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                                'Cannot remove item: Missing item ID'),
-                                            backgroundColor: Colors.redAccent,
-                                            duration: Duration(seconds: 2),
-                                          ),
-                                        );
-                                      }
-                                    },
-                              child: Container(
-                                padding: EdgeInsets.all(5.w),
-                                decoration: BoxDecoration(
-                                  color: MyTheme.redColor.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(6.r),
-                                ),
-                                child: isLoading
-                                    ? SizedBox(
-                                        width: 18.w,
-                                        height: 18.w,
-                                        child: CircularProgressIndicator(
-                                          color: MyTheme.redColor,
-                                          strokeWidth: 2.w,
-                                        ),
-                                      )
-                                    : Icon(
-                                        Icons.delete_rounded,
-                                        size: 18.w,
-                                        color: MyTheme.orangeColor,
-                                      ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
+                  ).animate().fadeIn(duration: 500.ms, delay: (100 * index).ms).slideX(
+                    begin: 0.2,
+                    end: 0.0,
+                    duration: 500.ms,
+                    curve: Curves.easeOut,
                   );
                 },
               );
             },
           ),
         ),
-        // الـ Total Price وعدد الـ Items في الأسفل
         Container(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
           decoration: BoxDecoration(
@@ -657,8 +693,12 @@ class _CartScreenState extends State<CartScreen> {
               ),
             ],
           ),
+        ).animate().fadeIn(duration: 500.ms).slideY(
+          begin: 0.1,
+          end: 0.0,
+          duration: 500.ms,
+          curve: Curves.easeOut,
         ),
-        // زر الـ Checkout
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
           child: ElevatedButton(
@@ -678,6 +718,7 @@ class _CartScreenState extends State<CartScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.r),
                   ),
+                  elevation: 6,
                   duration: const Duration(seconds: 2),
                 ),
               );
@@ -709,6 +750,20 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ],
             ),
+          ).animate(
+            effects: [
+              ScaleEffect(
+                begin: Offset(1.0, 1.0),
+                end: Offset(1.05, 1.05),
+                duration: Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
+              ),
+            ],
+          ).then().scale(
+            begin: Offset(1.05, 1.05),
+            end: Offset(1.0, 1.0),
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
           ),
         ),
       ],
@@ -744,31 +799,36 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
           SizedBox(height: 20.h),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(
-                context,
-                HomeScreen.routName,
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: MyTheme.orangeColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 8.h),
-              elevation: 5,
-              shadowColor: MyTheme.orangeColor.withOpacity(0.4),
-            ),
-            child: Text(
-              'Start Shopping',
-              style: MyTheme.lightTheme.textTheme.displayMedium?.copyWith(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
+          // ElevatedButton(
+          //   onPressed: () {
+          //     Navigator.pushReplacementNamed(
+          //       context,
+          //       HomeScreen.routName,
+          //     );
+          //   },
+          //   style: ElevatedButton.styleFrom(
+          //     backgroundColor: MyTheme.orangeColor,
+          //     shape: RoundedRectangleBorder(
+          //       borderRadius: BorderRadius.circular(12.r),
+          //     ),
+          //     padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 8.h),
+          //     elevation: 5,
+          //     shadowColor: MyTheme.orangeColor.withOpacity(0.4),
+          //   ),
+          //   child: Text(
+          //     'Start Shopping',
+          //     style: MyTheme.lightTheme.textTheme.displayMedium?.copyWith(
+          //       fontSize: 16.sp,
+          //       fontWeight: FontWeight.w600,
+          //     ),
+          //   ),
+          // ),
         ],
+      ).animate().fadeIn(duration: 600.ms).slideY(
+        begin: 0.2,
+        end: 0.0,
+        duration: 600.ms,
+        curve: Curves.easeOut,
       ),
     );
   }
