@@ -120,7 +120,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                         return "E-mail is required";
                       }
                       bool emailValid = RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(value);
                       if (!emailValid) {
                         return 'Please Enter Valid Email';
@@ -134,9 +134,11 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       viewmodel.CheckEmail(context);
                     },
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 6.h), // تقليل الـ padding
+                      padding: EdgeInsets.symmetric(
+                          vertical: 6.h), // تقليل الـ padding
                       backgroundColor: MyTheme.orangeColor,
-                      minimumSize: Size(double.infinity, 35.h), // تقليل ارتفاع الزر
+                      minimumSize:
+                          Size(double.infinity, 35.h), // تقليل ارتفاع الزر
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.r), // زوايا أنيقة
                       ),
@@ -163,5 +165,5 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 AuthRepositoryContract injectAuthRepositoryContract() {
   return AuthRepositoryImpl(
       remoteDataSource:
-      AuthRemoteDataSourceImpl(apiManager: ApiManager.getInstance()));
+          AuthRemoteDataSourceImpl(apiManager: ApiManager.getInstance()));
 }

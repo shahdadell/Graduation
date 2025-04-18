@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:graduation_project/Profile_screen/UI/profile_screen.dart';
 import 'package:graduation_project/Theme/theme.dart';
 import 'package:graduation_project/app_images/app_images.dart';
 import 'package:graduation_project/home_screen/UI/Cart_Page/CartScreen.dart';

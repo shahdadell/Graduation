@@ -1,5 +1,5 @@
-import '../data/model/response/profile_screen_response/EditeProfileResponse.dart';
-import '../data/model/response/profile_screen_response/ProfileScreenResponse.dart';
+import '../../data/model/response/profile_screen_response/EditeProfileResponse.dart';
+import '../../data/model/response/profile_screen_response/ProfileScreenResponse.dart';
 
 abstract class ProfileState {}
 

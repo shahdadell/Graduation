@@ -58,62 +58,86 @@ Widget buildEditableField(
     IconData icon, {
       bool isEditing = false,
       bool obscureText = false,
+      TextInputType? keyboardType,
     }) {
+  final textTheme = Theme.of(context).textTheme;
   return Padding(
-    padding: EdgeInsets.symmetric(vertical: 5.h),
+    padding: EdgeInsets.symmetric(vertical: 8.h),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: Theme.of(context)
-              .textTheme
-              .titleSmall
-              ?.copyWith(color: MyTheme.grayColor2),
+          style: textTheme.bodySmall?.copyWith(
+            color: MyTheme.blackColor,
+            fontSize: 13.sp,
+          ),
         ),
-        SizedBox(height: 5.h),
+        SizedBox(height: 6.h),
         isEditing
-            ? TextField(
+            ? TextFormField(
           controller: controller,
-          style: Theme.of(context).textTheme.titleMedium,
           obscureText: obscureText,
+          keyboardType: keyboardType,
+          style: textTheme.bodyMedium?.copyWith(
+            color: MyTheme.blackColor,
+            fontSize: 15.sp,
+          ),
           decoration: InputDecoration(
+            hintText: label == 'Name'
+                ? 'e.g., John Doe'
+                : label == 'Email'
+                ? 'e.g., example@domain.com'
+                : 'e.g., +1234567890',
+            hintStyle: textTheme.bodySmall?.copyWith(
+              color: MyTheme.grayColor2.withOpacity(0.6),
+              fontSize: 13.sp,
+            ),
+            suffixIcon: Icon(
+              icon,
+              color: MyTheme.orangeColor,
+              size: 20.w,
+            ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.r),
-              borderSide: BorderSide(color: MyTheme.grayColor),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.r),
-              borderSide: BorderSide(color: MyTheme.grayColor),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.r),
+              borderRadius: BorderRadius.circular(12.r),
               borderSide: BorderSide(
-                color: MyTheme.orangeColor,
-                width: 2.w,
+                color: MyTheme.grayColor3.withOpacity(0.3),
               ),
             ),
-            contentPadding:
-            EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
-            suffixIcon: Icon( // أضفنا الـ Icon كـ suffixIcon داخل الـ TextField
-              icon,
-              color: MyTheme.orangeColor2,
-              size: 20.w,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.r),
+              borderSide: BorderSide(
+                color: MyTheme.grayColor3.withOpacity(0.3),
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.r),
+              borderSide: BorderSide(
+                color: MyTheme.orangeColor,
+                width: 1.5,
+              ),
+            ),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 14.w,
+              vertical: 14.h,
             ),
           ),
         )
-            : Row( // لما مش في وضع التعديل، هنحط الـ Text والـ Icon في Row
+            : Row(
           children: [
             Expanded(
               child: Text(
                 controller.text,
-                style: Theme.of(context).textTheme.titleMedium,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: MyTheme.blackColor,
+                  fontSize: 15.sp,
+                ),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
             Icon(
               icon,
-              color: MyTheme.orangeColor2,
+              color: MyTheme.orangeColor,
               size: 20.w,
             ),
           ],

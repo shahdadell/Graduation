@@ -27,7 +27,7 @@ class WishlistScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Lottie.asset(
-                'assets/images/favouriteEmpty.json',
+                  'assets/images/favouriteEmpty.json',
                   width: 200.w,
                   height: 200.h,
                   fit: BoxFit.contain,
@@ -43,7 +43,8 @@ class WishlistScreen extends StatelessWidget {
                     Navigator.popUntil(context, (route) => route.isFirst);
                   },
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 14.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 40.w, vertical: 14.h),
                     backgroundColor: MyTheme.orangeColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.r),
