@@ -2,20 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:lottie/lottie.dart';
 import 'package:graduation_project/Profile_screen/UI/Addresses/add_address_screen.dart';
-import 'package:graduation_project/Profile_screen/UI/Addresses/edir_address_screen.dart';
 import 'package:graduation_project/Profile_screen/bloc/Address/Address_bloc.dart';
 import 'package:graduation_project/Profile_screen/bloc/Address/Address_event.dart';
 import 'package:graduation_project/Profile_screen/bloc/Address/Address_state.dart';
 import 'package:graduation_project/Theme/theme.dart';
+import 'edir_address_screen.dart';
 
-class AddressesScreen extends StatelessWidget {
+class AddressesScreen extends StatefulWidget {
   const AddressesScreen({super.key});
+
+  @override
+  _AddressesScreenState createState() => _AddressesScreenState();
+}
+
+class _AddressesScreenState extends State<AddressesScreen> {
+  bool isDialogShown = false; // تتبع إذا كان الـ Dialog ظهر
+  Map<String, bool> isDeleteButtonEnabled = {}; // تتبع حالة زرار الحذف لكل عنوان
 
   @override
   Widget build(BuildContext context) {
     context.read<AddressBloc>().add(FetchAddressesEvent());
+    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -26,245 +36,385 @@ class AddressesScreen extends StatelessWidget {
             child: Icon(
               Icons.arrow_back_ios_rounded,
               color: MyTheme.whiteColor,
-              size: 24.w,
+              size: 20.w,
             ),
           ),
-        ),
+        ).animate().scale(duration: 200.ms, curve: Curves.easeInOut),
         title: Text(
           "My Addresses",
-          style: MyTheme.lightTheme.textTheme.displayLarge?.copyWith(
-            fontSize: 22.sp,
+          style: textTheme.displayLarge?.copyWith(
+            fontSize: 20.sp,
             fontWeight: FontWeight.bold,
-            shadows: [
-              Shadow(
-                color: MyTheme.grayColor3,
-                blurRadius: 3.r,
-                offset: const Offset(1, 1),
-              ),
-            ],
+            color: MyTheme.whiteColor,
           ),
+        ).animate().fadeIn(duration: 400.ms).slideY(
+          begin: 0.1,
+          end: 0.0,
+          duration: 400.ms,
+          curve: Curves.easeOut,
         ),
         centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [MyTheme.orangeColor, MyTheme.orangeColor2],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-        ),
-        elevation: 5,
+        backgroundColor: MyTheme.orangeColor,
+        elevation: 4,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(30.r),
-          ),
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(16.r)),
         ),
       ),
-      body: BlocConsumer<AddressBloc, AddressState>(
-        listener: (context, state) {
-          if (state is AddAddressSuccessState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Address added successfully'),
-                backgroundColor: MyTheme.greenColor,
-                duration: const Duration(seconds: 2),
-              ),
-            );
-          } else if (state is AddAddressErrorState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Error adding address: ${state.message}'),
-                backgroundColor: MyTheme.redColor,
-                duration: const Duration(seconds: 2),
-              ),
-            );
-          } else if (state is DeleteAddressSuccessState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Address deleted successfully'),
-                backgroundColor: MyTheme.greenColor,
-                duration: const Duration(seconds: 2),
-              ),
-            );
-          } else if (state is DeleteAddressErrorState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Error deleting address: ${state.message}'),
-                backgroundColor: MyTheme.redColor,
-                duration: const Duration(seconds: 2),
-              ),
-            );
-          } else if (state is EditAddressSuccessState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Address updated successfully'),
-                backgroundColor: MyTheme.greenColor,
-                duration: const Duration(seconds: 2),
-              ),
-            );
-          } else if (state is EditAddressErrorState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Error updating address: ${state.message}'),
-                backgroundColor: MyTheme.redColor,
-                duration: const Duration(seconds: 2),
-              ),
-            );
-          }
-        },
-        builder: (context, state) {
-          if (state is FetchAddressesLoadingState) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: MyTheme.orangeColor,
-              ),
-            );
-          } else if (state is FetchAddressesSuccessState) {
-            final addresses = state.viewAddresses.data ?? [];
-            if (addresses.isEmpty) {
+      body: Container(
+        color: MyTheme.whiteColor,
+        child: BlocConsumer<AddressBloc, AddressState>(
+          listener: (context, state) {
+            // نمنع تكرار الـ Dialog
+            if (isDialogShown) return;
+
+            if (state is AddAddressSuccessState) {
+              setState(() {
+                isDialogShown = true;
+              });
+              AwesomeDialog(
+                context: context,
+                dialogType: DialogType.success,
+                animType: AnimType.scale,
+                title: 'Success',
+                desc: 'Address added successfully',
+                btnOkText: 'OK',
+                btnOkColor: MyTheme.orangeColor,
+                btnOkOnPress: () {
+                  setState(() {
+                    isDialogShown = false;
+                  });
+                },
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                titleTextStyle: textTheme.displayMedium?.copyWith(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                  color: MyTheme.blackColor,
+                ),
+                descTextStyle: textTheme.bodyMedium?.copyWith(
+                  fontSize: 14.sp,
+                  color: MyTheme.grayColor2,
+                ),
+              ).show();
+            } else if (state is AddAddressErrorState) {
+              setState(() {
+                isDialogShown = true;
+              });
+              AwesomeDialog(
+                context: context,
+                dialogType: DialogType.error,
+                animType: AnimType.scale,
+                title: 'Error',
+                desc: 'Error adding address: ${state.message}',
+                btnOkText: 'OK',
+                btnOkColor: MyTheme.redColor,
+                btnOkOnPress: () {
+                  setState(() {
+                    isDialogShown = false;
+                  });
+                },
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                titleTextStyle: textTheme.displayMedium?.copyWith(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                  color: MyTheme.blackColor,
+                ),
+                descTextStyle: textTheme.bodyMedium?.copyWith(
+                  fontSize: 14.sp,
+                  color: MyTheme.grayColor2,
+                ),
+              ).show();
+            } else if (state is DeleteAddressSuccessState) {
+              setState(() {
+                isDialogShown = true;
+              });
+              AwesomeDialog(
+                context: context,
+                dialogType: DialogType.success,
+                animType: AnimType.scale,
+                title: 'Success',
+                desc: 'Address deleted successfully',
+                btnOkText: 'OK',
+                btnOkColor: MyTheme.orangeColor,
+                btnOkOnPress: () {
+                  setState(() {
+                    isDialogShown = false;
+                    // إعادة تفعيل زرار الحذف للعنوان
+                    isDeleteButtonEnabled.clear(); // إعادة تعيين كل الأزرار
+                  });
+                },
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                titleTextStyle: textTheme.displayMedium?.copyWith(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                  color: MyTheme.blackColor,
+                ),
+                descTextStyle: textTheme.bodyMedium?.copyWith(
+                  fontSize: 14.sp,
+                  color: MyTheme.grayColor2,
+                ),
+              ).show();
+            } else if (state is DeleteAddressErrorState) {
+              setState(() {
+                isDialogShown = true;
+              });
+              AwesomeDialog(
+                context: context,
+                dialogType: DialogType.error,
+                animType: AnimType.scale,
+                title: 'Error',
+                desc: 'Error deleting address: ${state.message}',
+                btnOkText: 'OK',
+                btnOkColor: MyTheme.redColor,
+                btnOkOnPress: () {
+                  setState(() {
+                    isDialogShown = false;
+                    // إعادة تفعيل زرار الحذف للعنوان
+                    isDeleteButtonEnabled.clear(); // إعادة تعيين كل الأزرار
+                  });
+                },
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                titleTextStyle: textTheme.displayMedium?.copyWith(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                  color: MyTheme.blackColor,
+                ),
+                descTextStyle: textTheme.bodyMedium?.copyWith(
+                  fontSize: 14.sp,
+                  color: MyTheme.grayColor2,
+                ),
+              ).show();
+            } else if (state is EditAddressSuccessState) {
+              setState(() {
+                isDialogShown = true;
+              });
+              AwesomeDialog(
+                context: context,
+                dialogType: DialogType.success,
+                animType: AnimType.scale,
+                title: 'Success',
+                desc: 'Address updated successfully',
+                btnOkText: 'OK',
+                btnOkColor: MyTheme.orangeColor,
+                btnOkOnPress: () {
+                  setState(() {
+                    isDialogShown = false;
+                  });
+                },
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                titleTextStyle: textTheme.displayMedium?.copyWith(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                  color: MyTheme.blackColor,
+                ),
+                descTextStyle: textTheme.bodyMedium?.copyWith(
+                  fontSize: 14.sp,
+                  color: MyTheme.grayColor2,
+                ),
+              ).show();
+            } else if (state is EditAddressErrorState) {
+              setState(() {
+                isDialogShown = true;
+              });
+              AwesomeDialog(
+                context: context,
+                dialogType: DialogType.error,
+                animType: AnimType.scale,
+                title: 'Error',
+                desc: 'Error updating address: ${state.message}',
+                btnOkText: 'OK',
+                btnOkColor: MyTheme.redColor,
+                btnOkOnPress: () {
+                  setState(() {
+                    isDialogShown = false;
+                  });
+                },
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                titleTextStyle: textTheme.displayMedium?.copyWith(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                  color: MyTheme.blackColor,
+                ),
+                descTextStyle: textTheme.bodyMedium?.copyWith(
+                  fontSize: 14.sp,
+                  color: MyTheme.grayColor2,
+                ),
+              ).show();
+            }
+          },
+          builder: (context, state) {
+            if (state is FetchAddressesLoadingState) {
+              return Center(
+                child: CircularProgressIndicator(color: MyTheme.orangeColor),
+              );
+            } else if (state is FetchAddressesSuccessState) {
+              final addresses = state.viewAddresses.data ?? [];
+              if (addresses.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Lottie.asset(
+                        'assets/images/empty_addresses.json',
+                        width: 150.w,
+                        height: 150.h,
+                        fit: BoxFit.cover,
+                      ),
+                      SizedBox(height: 12.h),
+                      Text(
+                        'No Addresses Found',
+                        style: textTheme.titleLarge?.copyWith(
+                          color: MyTheme.grayColor2,
+                          fontSize: 16.sp,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      Text(
+                        'Add a new address to get started!',
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: MyTheme.grayColor,
+                          fontSize: 14.sp,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              return ListView.builder(
+                padding: EdgeInsets.all(16.w),
+                itemCount: addresses.length,
+                itemBuilder: (context, index) {
+                  final address = addresses[index];
+                  final addressId = address.addressId ?? '';
+                  // تهيئة حالة زرار الحذف للعنوان إذا لم تكن موجودة
+                  isDeleteButtonEnabled.putIfAbsent(addressId, () => true);
+                  return Container(
+                    margin: EdgeInsets.symmetric(vertical: 6.h),
+                    decoration: BoxDecoration(
+                      color: MyTheme.whiteColor,
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: MyTheme.grayColor3.withOpacity(0.2),
+                          blurRadius: 8.r,
+                          spreadRadius: 1.r,
+                          offset: Offset(0, 4.h),
+                        ),
+                      ],
+                    ),
+                    child: ListTile(
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                      leading: CircleAvatar(
+                        radius: 18.r,
+                        backgroundColor: MyTheme.orangeColor.withOpacity(0.1),
+                        child: Icon(
+                          Icons.location_on,
+                          color: MyTheme.orangeColor,
+                          size: 20.w,
+                        ),
+                      ),
+                      title: Text(
+                        address.addressName ?? 'No Name',
+                        style: textTheme.titleMedium?.copyWith(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        '${address.addressStreet ?? ''}, ${address.addressCity ?? ''}\nPhone: ${address.addressPhone ?? 'No Phone'}',
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: MyTheme.grayColor2,
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.edit,
+                              color: MyTheme.blueColor,
+                              size: 20.w,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      EditAddressScreen(address: address),
+                                ),
+                              );
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.delete,
+                              color: isDeleteButtonEnabled[addressId]!
+                                  ? MyTheme.orangeColor
+                                  : MyTheme.grayColor,
+                              size: 20.w,
+                            ),
+                            onPressed: isDeleteButtonEnabled[addressId]!
+                                ? () {
+                              AwesomeDialog(
+                                context: context,
+                                dialogType: DialogType.warning,
+                                animType: AnimType.scale,
+                                title: 'Delete Address',
+                                desc:
+                                'Are you sure you want to delete this address?',
+                                btnCancelText: 'Cancel',
+                                btnOkText: 'Delete',
+                                btnCancelColor: MyTheme.grayColor,
+                                btnOkColor: MyTheme.redColor,
+                                btnCancelOnPress: () {},
+                                btnOkOnPress: () {
+                                  setState(() {
+                                    isDeleteButtonEnabled[addressId] =
+                                    false; // تعطيل زرار الحذف
+                                  });
+                                  context.read<AddressBloc>().add(
+                                    DeleteAddressEvent(
+                                        addressId: addressId),
+                                  );
+                                },
+                              ).show();
+                            }
+                                : null,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ).animate().fadeIn(duration: 400.ms, delay: (100 * index).ms).slideX(begin: -0.1);
+                },
+              );
+            } else if (state is FetchAddressesErrorState) {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Lottie.asset(
-                      'assets/images/empty_addresses.json',
-                      width: 200.w,
-                      height: 200.h,
+                      'assets/images/favouriteEmpty.json',
+                      width: 150.w,
+                      height: 150.h,
                       fit: BoxFit.cover,
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 12.h),
                     Text(
-                      'No Addresses Found',
-                      style: MyTheme.lightTheme.textTheme.titleLarge?.copyWith(
-                        color: MyTheme.grayColor2,
-                        fontSize: 20.sp,
+                      'Error: ${state.message}',
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: MyTheme.redColor,
+                        fontSize: 14.sp,
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Add a new address to get started!',
-                      style: TextStyle(
-                        color: MyTheme.grayColor,
-                        fontSize: 16.sp,
-                      ),
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
               );
             }
-            return ListView.builder(
-              padding: EdgeInsets.all(16.w),
-              itemCount: addresses.length,
-              itemBuilder: (context, index) {
-                final address = addresses[index];
-                return Container(
-                  margin: EdgeInsets.symmetric(vertical: 8.h),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        MyTheme.whiteColor,
-                        MyTheme.lowOpacity.withOpacity(0.1),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(16.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: MyTheme.grayColor3,
-                        blurRadius: 8.r,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                    leading: CircleAvatar(
-                      radius: 24.r,
-                      backgroundColor: MyTheme.orangeColor.withOpacity(0.1),
-                      child: Icon(
-                        Icons.location_on,
-                        color: MyTheme.orangeColor,
-                        size: 28.w,
-                      ),
-                    ),
-                    title: Text(
-                      address.addressName ?? 'No Name',
-                      style: MyTheme.lightTheme.textTheme.titleMedium?.copyWith(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    subtitle: Text(
-                      '${address.addressStreet ?? ''}, ${address.addressCity ?? ''}\nPhone: ${address.addressPhone ?? 'No Phone'}',
-                      style: TextStyle(
-                        color: MyTheme.grayColor2,
-                        fontSize: 14.sp,
-                      ),
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: Icon(
-                            Icons.edit,
-                            color: MyTheme.blueColor,
-                            size: 24.w,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => EditAddressScreen(address: address),
-                              ),
-                            );
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.delete,
-                            color: MyTheme.orangeColor,
-                            size: 24.w,
-                          ),
-                          onPressed: () {
-                            context.read<AddressBloc>().add(
-                                  DeleteAddressEvent(addressId: address.addressId ?? ''),
-                                );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ).animate().fadeIn(duration: 500.ms, delay: (100 * index).ms).slideX(begin: -0.2);
-              },
-            );
-          } else if (state is FetchAddressesErrorState) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Lottie.asset(
-                    'assets/images/favouriteEmpty.json',
-                    width: 200.w,
-                    height: 200.h,
-                    fit: BoxFit.cover,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Error: ${state.message}',
-                    style: TextStyle(
-                      color: MyTheme.redColor,
-                      fontSize: 16.sp,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            );
-          }
-          return const SizedBox.shrink();
-        },
+            return const SizedBox.shrink();
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -275,33 +425,14 @@ class AddressesScreen extends StatelessWidget {
             ),
           );
         },
-        backgroundColor: Colors.transparent,
-        elevation: 5,
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [MyTheme.orangeColor, MyTheme.orangeColor2],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: MyTheme.grayColor3,
-                blurRadius: 8.r,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Center(
-            child: Icon(
-              Icons.add,
-              color: MyTheme.whiteColor,
-              size: 30.w,
-            ),
-          ),
+        backgroundColor: MyTheme.orangeColor,
+        elevation: 3,
+        child: Icon(
+          Icons.add,
+          color: MyTheme.whiteColor,
+          size: 24.w,
         ),
-      ).animate().scale(duration: 500.ms, curve: Curves.easeInOut),
+      ).animate().scale(duration: 400.ms, curve: Curves.easeInOut),
     );
   }
 }
