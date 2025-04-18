@@ -592,7 +592,7 @@ class _CartScreenState extends State<CartScreen> {
                                     : Icon(
                                         Icons.delete_rounded,
                                         size: 18.w,
-                                        color: MyTheme.redColor,
+                                        color: MyTheme.orangeColor,
                                       ),
                               ),
                             ),

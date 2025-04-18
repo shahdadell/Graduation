@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:graduation_project/Profile_screen/UI/Profile/profile_screen.dart';
 import 'package:graduation_project/Theme/theme.dart';
-import 'package:graduation_project/home_screen/UI/Home_Page/home_screen.dart'; // HomeScreen
-import 'package:graduation_project/home_screen/UI/WishlistScreen/WishlistScreen.dart'; // WishlistScreen
+import 'package:graduation_project/home_screen/UI/Home_Page/home_screen.dart';
+import 'package:graduation_project/home_screen/Wishlist_Screen/UI/WishlistScreen.dart'; // HomeScreen
 
 class NavBarWidget extends StatefulWidget {
   const NavBarWidget({super.key, this.preIndex});

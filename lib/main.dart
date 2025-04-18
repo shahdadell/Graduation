@@ -10,6 +10,9 @@ import 'package:graduation_project/auth/forget_password/reset_password/ResetPass
 import 'package:graduation_project/home_screen/UI/Home_Page/home_screen.dart';
 import 'package:graduation_project/home_screen/UI/Items_Page/Items_screen.dart';
 import 'package:graduation_project/home_screen/UI/Category_Page/Services_Screen.dart';
+import 'package:graduation_project/home_screen/Wishlist_Screen/UI/WishlistScreen.dart';
+import 'package:graduation_project/home_screen/Wishlist_Screen/bloc/FavoriteBloc.dart';
+import 'package:graduation_project/home_screen/Wishlist_Screen/data/repo/FavoriteRepo.dart';
 import 'package:graduation_project/home_screen/bloc/Cart/cart_bloc.dart';
 import 'package:graduation_project/home_screen/bloc/Home/home_bloc.dart';
 import 'package:graduation_project/home_screen/data/repo/cart_repo.dart';
@@ -21,8 +24,8 @@ import 'package:graduation_project/auth/sing_in_screen/sign_in_screen.dart';
 import 'package:graduation_project/home_screen/UI/SearchFieldWidget/SearchScreen.dart';
 import 'package:graduation_project/Profile_screen/UI/Profile/profile_screen.dart';
 import 'package:graduation_project/Profile_screen/UI/Profile/edit_profile_screen.dart';
-import 'package:graduation_project/Profile_screen/bloc/Address/Address_bloc.dart'; // أضفنا الـ AddressBloc
-import 'package:graduation_project/Profile_screen/data/repo/Address_repo.dart'; // أضفنا الـ AddressRepo
+import 'package:graduation_project/Profile_screen/bloc/Address/Address_bloc.dart';
+import 'package:graduation_project/Profile_screen/data/repo/Address_repo.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,7 +50,10 @@ class MyApp extends StatelessWidget {
             create: (context) => CartBloc(cartRepo: CartRepo()),
           ),
           BlocProvider(
-            create: (context) => AddressBloc(AddressRepo()), // أضفنا الـ AddressBloc هنا
+            create: (context) => AddressBloc(AddressRepo()),
+          ),
+          BlocProvider(
+            create: (context) => FavoriteBloc(favoriteRepo: FavoriteRepo()), // أضفنا الـ FavoriteBloc هنا
           ),
         ],
         child: MaterialApp(
@@ -84,6 +90,7 @@ class MyApp extends StatelessWidget {
                 profile: args['profile'],
               );
             },
+            WishlistScreen.routeName: (context) => const WishlistScreen(),
           },
           onGenerateRoute: (settings) {
             if (settings.name == ServicesScreen.routeName) {

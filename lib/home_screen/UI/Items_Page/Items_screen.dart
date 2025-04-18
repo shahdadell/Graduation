@@ -17,7 +17,7 @@ class ServiceItemsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final int? userId = AppLocalStorage.getData('user_id');
     if (userId == null) {
-      return Scaffold(
+      return const Scaffold(
         appBar: ItemsAppBar(),
         body: LockedContent(),
       );
@@ -31,7 +31,7 @@ class ServiceItemsScreen extends StatelessWidget {
         ),
       ],
       child: Scaffold(
-        appBar: ItemsAppBar(),
+        appBar: const ItemsAppBar(),
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -40,7 +40,7 @@ class ServiceItemsScreen extends StatelessWidget {
               end: Alignment.bottomCenter,
             ),
           ),
-          child: ItemsGrid(),
+          child: const ItemsGrid(),
         ),
       ),
     );
