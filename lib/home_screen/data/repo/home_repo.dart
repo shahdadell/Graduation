@@ -11,7 +11,7 @@ import 'package:graduation_project/home_screen/data/model/offers_model_response/
 import 'package:graduation_project/home_screen/data/model/services_model_response/service_model.dart';
 import 'package:graduation_project/home_screen/data/model/topSelling_model_response/TopSellinModelResponse.dart';
 import 'package:graduation_project/home_screen/data/model/search_model_response/SearchModelResponse.dart'
-as search;
+    as search; // Alias واحد فقط
 import '../../../local_data/shared_preference.dart';
 import '../model/Cart_model_response/CartAddResponse.dart';
 
@@ -19,32 +19,18 @@ class HomeRepo {
   static Future<List<Categorydatum>> fetchCategories() async {
     try {
       var response = await DioProvider.get(endpoint: AppEndpoints.fetchHome);
-      if (kDebugMode) {
-        print("Fetch Categories Status Code: ${response.statusCode}");
-        print("Fetch Categories Response: ${response.data}");
-      }
+      log('Response Status Code: ${response.statusCode}');
+      log('Response Data: ${response.data}');
 
       if (response.statusCode == 200 && response.data['status'] == 'success') {
-        if (response.data['categories'] != null &&
-            response.data['categories']['data'] != null) {
-          List categoriesData = response.data['categories']['data'];
-          if (kDebugMode) {
-            print(
-                "Categories Data Parsed: ${categoriesData.length} categories");
-          }
-          return categoriesData.map((e) => Categorydatum.fromJson(e)).toList();
-        } else {
-          throw Exception('Categories data is null or missing');
-        }
+        List categoriesData = response.data['categories']['data'];
+        return categoriesData.map((e) => Categorydatum.fromJson(e)).toList();
       } else {
-        throw Exception(
-            'Failed to fetch categories: ${response.data['message'] ?? 'Unknown error'}');
+        throw Exception('Failed to fetch categories');
       }
     } catch (e) {
-      if (kDebugMode) {
-        print("Exception in fetchCategories: $e");
-      }
-      throw Exception('Error fetching categories: $e');
+      log('Exception: $e');
+      throw Exception('Error fetching categories');
     }
   }
 
@@ -73,6 +59,8 @@ class HomeRepo {
       );
       if (kDebugMode) {
         print("Fetch TopSelling Status Code: ${response.statusCode}");
+      }
+      if (kDebugMode) {
         print("Fetch TopSelling Response: ${response.data}");
       }
       if (response.statusCode == 200 && response.data['status'] == 'success') {
@@ -96,31 +84,18 @@ class HomeRepo {
   static Future<List<ItemModel>> fetchDiscountedItems() async {
     try {
       var response = await DioProvider.get(endpoint: AppEndpoints.fetchHome);
-      if (kDebugMode) {
-        print("Fetch Discounted Items Status Code: ${response.statusCode}");
-        print("Fetch Discounted Items Response: ${response.data}");
-      }
+      log('Response Status Code: ${response.statusCode}');
+      log('Response Data: ${response.data}');
 
       if (response.statusCode == 200 && response.data['status'] == 'success') {
-        if (response.data['items'] != null &&
-            response.data['items']['data'] != null) {
-          List itemsData = response.data['items']['data'];
-          if (kDebugMode) {
-            print("Discounted Items Data Parsed: ${itemsData.length} items");
-          }
-          return itemsData.map((e) => ItemModel.fromJson(e)).toList();
-        } else {
-          throw Exception('Discounted items data is null or missing');
-        }
+        List itemsData = response.data['items']['data'];
+        return itemsData.map((e) => ItemModel.fromJson(e)).toList();
       } else {
-        throw Exception(
-            'Failed to fetch discounted items: ${response.data['message'] ?? 'Unknown error'}');
+        throw Exception('Failed to fetch discounted items');
       }
     } catch (e) {
-      if (kDebugMode) {
-        print("Exception in fetchDiscountedItems: $e");
-      }
-      throw Exception('Error fetching discounted items: $e');
+      log('Exception: $e');
+      throw Exception('Error fetching discounted items');
     }
   }
 
@@ -194,7 +169,8 @@ class HomeRepo {
       final token = await AppLocalStorage.getData('token');
 
       var formData = FormData.fromMap({
-        'search': query,
+        'search':
+            query, // تغيير من 'query' إلى 'search' عشان يتطابق مع الباك-إند
       });
       var response = await DioProvider.post(
         endpoint: AppEndpoints.search,
@@ -211,9 +187,9 @@ class HomeRepo {
       if (response.statusCode == 200) {
         if (response.data['status'] == 'success') {
           final searchResponse =
-          search.SearchModelResponse.fromJson(response.data);
+              search.SearchModelResponse.fromJson(response.data);
           log('Parsed SearchModelResponse: $searchResponse');
-          return searchResponse;
+          return searchResponse; // رجعنا الـ SearchModelResponse كامل
         } else {
           throw Exception(
               'Search failed: ${response.data['message'] ?? 'Unknown error'}');
