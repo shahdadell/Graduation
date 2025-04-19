@@ -1,11 +1,11 @@
-class AddtoFavourite {
+class AddToFavourite {
   String? status;
   String? message;
 
-  AddtoFavourite({this.status, this.message});
+  AddToFavourite({this.status, this.message});
 
-  factory AddtoFavourite.fromJson(Map<String, dynamic> json) {
-    return AddtoFavourite(
+  factory AddToFavourite.fromJson(Map<String, dynamic> json) {
+    return AddToFavourite(
       status: json['status'] as String?,
       message: json['message'] as String?,
     );

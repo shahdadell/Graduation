@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/Theme/theme.dart';
-import 'package:graduation_project/home_screen/Wishlist_Screen/bloc/FavoriteBloc.dart';
-import 'package:graduation_project/home_screen/Wishlist_Screen/bloc/FavoriteEvent.dart';
-import 'package:graduation_project/home_screen/Wishlist_Screen/bloc/FavoriteState.dart';
 import 'package:graduation_project/home_screen/bloc/Cart/cart_bloc.dart';
 import 'package:graduation_project/home_screen/bloc/Cart/cart_event.dart';
 import 'package:graduation_project/home_screen/bloc/Cart/cart_state.dart';
@@ -21,19 +18,7 @@ void showItemDetailsDialog(BuildContext context, dynamic item) {
   double rating =
       double.tryParse(item.serviceRating?.toString() ?? '0.0') ?? 0.0;
   String phoneNumber = item.servicePhone ?? 'Not Available';
-  int quantity = 1;
-
-  // تحويل itemsId لـ int بأمان
-  final itemId = int.tryParse(item.itemsId?.toString() ?? '0') ?? 0;
-  final userId = AppLocalStorage.getData('user_id');
-
-  // تحقق من حالة العنصر في المفضلة عند فتح الـ Dialog
-  if (userId != null && itemId != 0) {
-    context.read<FavoriteBloc>().add(CheckFavoriteStatusEvent(
-          userId: userId,
-          itemId: itemId,
-        ));
-  }
+  int quantity = 1; // متغير لتتبع الكمية في الـ Dialog
 
   showDialog(
     context: context,
@@ -115,7 +100,7 @@ void showItemDetailsDialog(BuildContext context, dynamic item) {
                               ),
                             ),
                           ),
-                          if (discount != 0)
+                          if (discount != 0) // استخدام المتغير discount مباشرة
                             Positioned(
                               top: 8.h,
                               right: 8.w,
@@ -199,9 +184,7 @@ void showItemDetailsDialog(BuildContext context, dynamic item) {
                                     style: TextStyle(
                                       fontSize: 13.sp,
                                       color: Colors.grey[600],
-                                      decoration: discount > 0
-                                          ? TextDecoration.lineThrough
-                                          : null,
+                                      decoration: TextDecoration.lineThrough,
                                     ),
                                   ),
                                 ],
@@ -309,141 +292,27 @@ void showItemDetailsDialog(BuildContext context, dynamic item) {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              BlocListener<FavoriteBloc, FavoriteState>(
-                                listener: (context, state) {
-                                  if (state is AddToFavoriteSuccessState) {
-                                    ScaffoldMessenger.of(dialogContext)
-                                        .showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'Added to Favorites!',
-                                          style: TextStyle(fontSize: 14.sp),
-                                        ),
-                                        backgroundColor: Colors.green,
-                                        behavior: SnackBarBehavior.floating,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.r),
-                                        ),
-                                        duration: const Duration(seconds: 1),
+                              _buildActionButton(
+                                icon: Icons.favorite_border,
+                                color: Colors.redAccent,
+                                onTap: () {
+                                  ScaffoldMessenger.of(dialogContext)
+                                      .showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        'Added to Favorites!',
+                                        style: TextStyle(fontSize: 14.sp),
                                       ),
-                                    );
-                                  } else if (state
-                                      is DeleteFavoriteItemSuccessState) {
-                                    ScaffoldMessenger.of(dialogContext)
-                                        .showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'Removed from Favorites!',
-                                          style: TextStyle(fontSize: 14.sp),
-                                        ),
-                                        backgroundColor: Colors.green,
-                                        behavior: SnackBarBehavior.floating,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.r),
-                                        ),
-                                        duration: const Duration(seconds: 1),
+                                      backgroundColor: Colors.black87,
+                                      behavior: SnackBarBehavior.floating,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.r),
                                       ),
-                                    );
-                                  } else if (state is AddToFavoriteErrorState) {
-                                    ScaffoldMessenger.of(dialogContext)
-                                        .showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'Failed to add to favorites: ${state.message}',
-                                          style: TextStyle(fontSize: 14.sp),
-                                        ),
-                                        backgroundColor: Colors.redAccent,
-                                        behavior: SnackBarBehavior.floating,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.r),
-                                        ),
-                                        duration: const Duration(seconds: 2),
-                                      ),
-                                    );
-                                  } else if (state
-                                      is DeleteFavoriteItemErrorState) {
-                                    ScaffoldMessenger.of(dialogContext)
-                                        .showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'Failed to remove from favorites: ${state.message}',
-                                          style: TextStyle(fontSize: 14.sp),
-                                        ),
-                                        backgroundColor: Colors.redAccent,
-                                        behavior: SnackBarBehavior.floating,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.r),
-                                        ),
-                                        duration: const Duration(seconds: 2),
-                                      ),
-                                    );
-                                  }
+                                      duration: const Duration(seconds: 1),
+                                    ),
+                                  );
                                 },
-                                child: BlocBuilder<FavoriteBloc, FavoriteState>(
-                                  builder: (context, state) {
-                                    bool isFavorite = false;
-                                    if (state is CheckFavoriteStatusSuccessState &&
-                                        state.itemId == itemId) {
-                                      isFavorite = state.isFavorite;
-                                    }
-
-                                    return _buildActionButton(
-                                      icon: isFavorite
-                                          ? Icons.favorite
-                                          : Icons.favorite_border,
-                                      color: Colors.redAccent,
-                                      onTap: () {
-                                        if (userId == null) {
-                                          ScaffoldMessenger.of(dialogContext)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                'Please log in to add to favorites',
-                                                style:
-                                                    TextStyle(fontSize: 14.sp),
-                                              ),
-                                              backgroundColor: Colors.redAccent,
-                                              behavior: SnackBarBehavior.floating,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10.r),
-                                              ),
-                                              duration:
-                                                  const Duration(seconds: 2),
-                                            ),
-                                          );
-                                          return;
-                                        }
-                                        if (isFavorite) {
-                                          context.read<FavoriteBloc>().add(
-                                                DeleteFavoriteItemEvent(
-                                                  userId: userId,
-                                                  itemId: itemId,
-                                                ),
-                                              );
-                                        } else {
-                                          context.read<FavoriteBloc>().add(
-                                                AddToFavoriteEvent(
-                                                  userId: userId,
-                                                  itemId: itemId,
-                                                ),
-                                              );
-                                          // تحقق من حالة العنصر مباشرة بعد الإضافة
-                                          context.read<FavoriteBloc>().add(
-                                                CheckFavoriteStatusEvent(
-                                                  userId: userId,
-                                                  itemId: itemId,
-                                                ),
-                                              );
-                                        }
-                                      },
-                                    );
-                                  },
-                                ),
                               ),
                               Row(
                                 children: [
@@ -523,15 +392,20 @@ void showItemDetailsDialog(BuildContext context, dynamic item) {
                                   icon: Icons.add_shopping_cart,
                                   color: MyTheme.orangeColor,
                                   onTap: () {
+                                    final userId =
+                                        AppLocalStorage.getData('user_id');
                                     if (userId != null) {
-                                      if (itemId != 0) {
-                                        context.read<CartBloc>().add(
-                                              AddToCartEvent(
-                                                userId: userId,
-                                                itemId: itemId,
-                                                quantity: quantity,
-                                              ),
-                                            );
+                                      // استخدام itemsId فقط لأن العنصر مش جاي من الـ Cart
+                                      final itemId = item.itemsId;
+                                      if (itemId != null) {
+                                        context
+                                            .read<CartBloc>()
+                                            .add(AddToCartEvent(
+                                              userId: userId,
+                                              itemId:
+                                                  int.parse(itemId.toString()),
+                                              quantity: quantity,
+                                            ));
                                       } else {
                                         ScaffoldMessenger.of(dialogContext)
                                             .showSnackBar(
@@ -638,7 +512,7 @@ Widget _buildActionButton({
           BoxShadow(
             color: color.withOpacity(0.3),
             blurRadius: 4.r,
-            spreadRadius: 1.r,
+            //spreadRadius: 1.r,
           ),
         ],
       ),

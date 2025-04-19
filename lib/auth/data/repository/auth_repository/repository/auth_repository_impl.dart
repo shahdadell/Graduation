@@ -2,6 +2,7 @@ import 'package:graduation_project/auth/data/model/response/Login/LoginResponse.
 import 'package:graduation_project/auth/data/model/response/OTP/CheckEmailResponse.dart';
 import 'package:graduation_project/auth/data/model/response/Register/registerresponse_new.dart';
 import 'package:graduation_project/auth/data/model/response/Register/VerfiyCodeResponse.dart';
+import 'package:graduation_project/auth/data/model/response/ResendCode.dart';
 import 'package:graduation_project/auth/data/model/response/ResetPassword/ResetPasswordResponse.dart';
 import 'package:graduation_project/auth/data/model/response/ResetPassword/VerfiyCodeForgetPasswordResponse.dart';
 import 'package:graduation_project/auth/domain/repository/data_source/auth_remote_data_source.dart';
@@ -42,5 +43,10 @@ class AuthRepositoryImpl implements AuthRepositoryContract {
   Future<ResetPasswordResponse> resetPassword(
       String email, String hashedPassword) async {
     return await remoteDataSource.resetPassword(email, hashedPassword);
+  }
+
+  @override
+  Future<ResendCodeResponse> resendCode(String email) async {
+    return await remoteDataSource.resendCode(email);
   }
 }

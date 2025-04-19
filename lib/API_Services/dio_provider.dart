@@ -39,27 +39,24 @@ class DioProvider {
         String responseData = response.data.toString().trim();
         print('Trimmed Response: $responseData');
 
-        // تحسين التعامل مع JSON غير صحيح
+        if (responseData.contains('}{')) {
+          final parts = responseData.split('}{');
+          responseData = '{${parts[1]}';
+          print('Fixed Response: $responseData');
+        } else {
+          if (!responseData.startsWith('{') || !responseData.endsWith('}')) {
+            print('Error: Incomplete JSON response');
+            throw Exception('Incomplete JSON response: $responseData');
+          }
+        }
+
         try {
           response.data = jsonDecode(responseData);
           print('Cleaned Response (Parsed JSON): ${response.data}');
         } catch (e) {
           print('Failed to parse response as JSON: $e');
           print('Response (before parsing): $responseData');
-          // محاولة إصلاح JSON غير صحيح
-          if (responseData.contains('}{')) {
-            final parts = responseData.split('}{');
-            responseData = '{${parts.last}';
-            try {
-              response.data = jsonDecode(responseData);
-              print('Fixed Response (Parsed JSON): ${response.data}');
-            } catch (e) {
-              print('Failed to fix JSON: $e');
-              throw Exception('Invalid JSON format: $responseData');
-            }
-          } else {
-            throw Exception('Invalid JSON format: $responseData');
-          }
+          throw Exception('Invalid JSON format: $responseData');
         }
 
         return handler.next(response);
@@ -76,7 +73,6 @@ class DioProvider {
 
   static Future<String?> _getToken() async {
     final token = AppLocalStorage.getData('token');
-    print('Retrieved Token: $token');
     return token as String?;
   }
 
@@ -88,18 +84,14 @@ class DioProvider {
     };
 
     final String? token = await _getToken();
-    print('Token in _prepareHeaders: $token');
-    if (token != null && token.isNotEmpty && token != 'your_token_here') {
+    if (token != null && token.isNotEmpty) {
       defaultHeaders['Authorization'] = 'Bearer $token';
-      print('Authorization Header set to: Bearer $token');
     } else {
-      print('No valid token found in AppLocalStorage, skipping Authorization header');
-      defaultHeaders.remove('Authorization');
+      print('No token found in AppLocalStorage');
     }
 
     if (headers != null) {
       defaultHeaders.addAll(headers.cast<String, String>());
-      print('Headers after merging with custom headers: $defaultHeaders');
     }
 
     return defaultHeaders;

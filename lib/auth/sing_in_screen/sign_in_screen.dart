@@ -19,7 +19,7 @@ import 'package:graduation_project/auth/sign_up_screen/sign_up_screen.dart';
 import 'package:graduation_project/auth/sing_in_screen/cubit/login_screen_viewmodel.dart';
 import 'package:graduation_project/auth/sing_in_screen/cubit/login_state.dart';
 import 'package:graduation_project/auth/sing_in_screen/text_filed_login.dart';
-import 'package:graduation_project/functions/navigation.dart'; // استوردت ملف الـ navigation
+import 'package:graduation_project/functions/navigation.dart';
 import 'package:graduation_project/home_screen/UI/Home_Page/home_screen.dart';
 import 'package:graduation_project/local_data/shared_preference.dart';
 import '../../main_screen/main_screen.dart';
@@ -46,7 +46,7 @@ class _SignInScreenState extends State<SignInScreen> {
   void checkToken() async {
     final token = AppLocalStorage.getData('token');
     if (token != null && token.isNotEmpty) {
-      showLoadingDialog(context); // أضفت loading dialog
+      showLoadingDialog(context);
       final userId = AppLocalStorage.getData('user_id');
       if (userId != null) {
         final profileBloc = ProfileBloc(ProfileRepo());
@@ -61,15 +61,14 @@ class _SignInScreenState extends State<SignInScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                   content:
-                      Text('Failed to load profile: ${profileState.message}')),
+                  Text('Failed to load profile: ${profileState.message}')),
             );
             break;
           }
         }
       }
-      Navigator.of(context).pop(); // إغلاق الـ loading dialog
-      pushWithReplacement(
-          context, const NavBarWidget()); // استخدمت pushWithReplacement
+      Navigator.of(context).pop();
+      pushWithReplacement(context, const NavBarWidget());
     }
   }
 
@@ -91,43 +90,57 @@ class _SignInScreenState extends State<SignInScreen> {
           if (Navigator.canPop(context)) {
             Navigator.pop(context);
           }
-          showAppDialog(context, state.errorMessage!);
+          String errorMessage = state.errorMessage ?? "An error occurred";
+          if (errorMessage.contains("Session expired")) {
+            DialogUtils.showMessage(
+              context,
+              "Your session has expired. Please log in again.",
+              posActionName: 'Ok',
+              posAction: () {
+                AppLocalStorage.clearData();
+                pushAndRemoveUntil(context, const SignInScreen());
+              },
+            );
+          } else if (errorMessage.contains("No internet connection")) {
+            DialogUtils.showMessage(
+              context,
+              "No internet connection. Please check your network and try again.",
+              posActionName: 'Ok',
+            );
+          } else {
+            DialogUtils.showMessage(context, errorMessage, posActionName: 'Ok');
+          }
         } else if (state is LoginSuccessState) {
           if (Navigator.canPop(context)) {
-            Navigator.pop(context); // إغلاق الـ loading dialog
+            Navigator.pop(context);
           }
 
-          // جيب الـ userId من الـ response
           final userId = state.response.userId;
           if (userId != null) {
             await AppLocalStorage.cacheData('user_id', userId);
             await AppLocalStorage.cacheData('token', state.response.token);
 
-            // اعمل Bloc لجلب الـ Profile
             final profileBloc = ProfileBloc(ProfileRepo());
             profileBloc.add(FetchProfileEvent(userId.toString()));
 
-            // استنى الـ Profile يتحمل قبل التنقل
             await for (final profileState in profileBloc.stream) {
               if (profileState is ProfileLoaded) {
                 final username = profileState.profile.data?.usersName;
                 await AppLocalStorage.cacheData(
                     AppLocalStorage.userNameKey, username);
-                break; // اخرج من اللوب لما الـ Profile يتحمل
+                break;
               } else if (profileState is ProfileError) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content:
-                        Text('Failed to load profile: ${profileState.message}'),
+                    Text('Failed to load profile: ${profileState.message}'),
                   ),
                 );
                 break;
               }
             }
 
-            // بعد ما الـ username يتخزن، انقل للـ NavBarWidget
-            pushAndRemoveUntil(
-                context, const NavBarWidget()); // استخدمت pushAndRemoveUntil
+            pushAndRemoveUntil(context, const NavBarWidget());
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('User ID not found')),
@@ -139,8 +152,7 @@ class _SignInScreenState extends State<SignInScreen> {
         appBar: AppBar(
           leading: InkWell(
             onTap: () {
-              pushWithReplacement(
-                  context, const MainScreen()); // استخدمت pushWithReplacement
+              pushWithReplacement(context, const MainScreen());
             },
             child: Padding(
               padding: EdgeInsets.all(10.w),
@@ -195,7 +207,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         return "E-mail is required";
                       }
                       bool emailValid = RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(value);
                       if (!emailValid) {
                         return 'Please Enter Valid Email';
@@ -326,5 +338,5 @@ class _SignInScreenState extends State<SignInScreen> {
 AuthRepositoryContract injectAuthRepositoryContract() {
   return AuthRepositoryImpl(
       remoteDataSource:
-          AuthRemoteDataSourceImpl(apiManager: ApiManager.getInstance()));
+      AuthRemoteDataSourceImpl(apiManager: ApiManager.getInstance()));
 }

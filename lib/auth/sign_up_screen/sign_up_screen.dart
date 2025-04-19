@@ -40,7 +40,7 @@ class SignUpScreenState extends State<SignUpScreen> {
   void checkToken() async {
     final token = AppLocalStorage.getData('token');
     if (token != null && token.isNotEmpty) {
-      pushWithReplacement(context, const OtpScreen());
+      pushWithReplacement(context, OtpScreen(email: '',));
     }
   }
 

@@ -29,7 +29,7 @@ environment:
 # versions available, run flutter pub outdated.
 dependencies:
   flutter_staggered_animations: ^1.1.1
-  google_nav_bar: ^5.0.6  # آخر إصدار (تأكدي من الإصدار الحالي على pub.dev)
+  google_nav_bar: ^5.0.6
   image_picker: ^1.1.2
   cached_network_image: ^3.3.1
   bloc: ^9.0.0
@@ -52,6 +52,7 @@ dependencies:
   lottie: ^3.2.0
   awesome_dialog: ^3.2.1
   shared_preferences: ^2.5.2
+  connectivity_plus: ^6.0.5
   smooth_page_indicator: ^1.2.0+3
 
 dev_dependencies:
