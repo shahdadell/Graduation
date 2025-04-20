@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: MyTheme.lightTheme,
-          initialRoute: SplashScreen.routName,
+          initialRoute: OtpScreen.routName,
           routes: {
             SplashScreen.routName: (context) => const SplashScreen(),
             HomeScreen.routName: (context) => const HomeScreen(),
