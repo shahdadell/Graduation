@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/Main_Screen/main_screen.dart';
+import 'package:graduation_project/Profile_screen/UI/Addresses/select_location_screen.dart';
 import 'package:graduation_project/Splash_Screen/splash_screen.dart';
 import 'package:graduation_project/Theme/theme.dart';
 import 'package:graduation_project/API_Services/dio_provider.dart';
@@ -10,9 +11,6 @@ import 'package:graduation_project/auth/forget_password/reset_password/ResetPass
 import 'package:graduation_project/home_screen/UI/Home_Page/home_screen.dart';
 import 'package:graduation_project/home_screen/UI/Items_Page/Items_screen.dart';
 import 'package:graduation_project/home_screen/UI/Category_Page/Services_Screen.dart';
-import 'package:graduation_project/home_screen/Wishlist_Screen/UI/WishlistScreen.dart';
-import 'package:graduation_project/home_screen/Wishlist_Screen/bloc/FavoriteBloc.dart';
-import 'package:graduation_project/home_screen/Wishlist_Screen/data/repo/FavoriteRepo.dart';
 import 'package:graduation_project/home_screen/bloc/Cart/cart_bloc.dart';
 import 'package:graduation_project/home_screen/bloc/Home/home_bloc.dart';
 import 'package:graduation_project/home_screen/data/repo/cart_repo.dart';
@@ -26,9 +24,12 @@ import 'package:graduation_project/Profile_screen/UI/Profile/profile_screen.dart
 import 'package:graduation_project/Profile_screen/UI/Profile/edit_profile_screen.dart';
 import 'package:graduation_project/Profile_screen/bloc/Address/Address_bloc.dart';
 import 'package:graduation_project/Profile_screen/data/repo/Address_repo.dart';
+import 'package:latlong2/latlong.dart';
+import 'dart:ui' as ui;
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   DioProvider.init();
   AppLocalStorage.init();
   runApp(const MyApp());
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(360, 640),
+      designSize: const ui.Size(360, 640),
       minTextAdapt: true,
       splitScreenMode: true,
       child: MultiBlocProvider(
@@ -51,10 +52,6 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => AddressBloc(AddressRepo()),
-          ),
-          BlocProvider(
-            create: (context) => FavoriteBloc(
-                favoriteRepo: FavoriteRepo()), // أضفنا الـ FavoriteBloc هنا
           ),
         ],
         child: MaterialApp(
@@ -67,31 +64,37 @@ class MyApp extends StatelessWidget {
             MainScreen.routName: (context) => const MainScreen(),
             SignInScreen.routName: (context) => const SignInScreen(),
             SignUpScreen.routeName: (context) => const SignUpScreen(),
-            OtpScreen.routName: (context) =>  OtpScreen(email: '',),
+            OtpScreen.routName: (context) => OtpScreen(email: ''),
             SearchScreen.routeName: (context) => const SearchScreen(),
             OtpScreenForgetPassword.routName: (context) =>
-                const OtpScreenForgetPassword(),
+            const OtpScreenForgetPassword(),
             ForgetPassword.routName: (context) => const ForgetPassword(),
             ResetPassword.routName: (context) {
               final String email =
-                  ModalRoute.of(context)!.settings.arguments as String;
+              ModalRoute.of(context)!.settings.arguments as String;
               return ResetPassword(email: email);
             },
             ServiceItemsScreen.routeName: (context) {
               final args = ModalRoute.of(context)!.settings.arguments
-                  as Map<String, dynamic>;
+              as Map<String, dynamic>;
               return ServiceItemsScreen(serviceId: args['serviceId']);
             },
             ProfileScreen.routeName: (context) => const ProfileScreen(),
             EditProfileScreen.routeName: (context) {
               final args = ModalRoute.of(context)!.settings.arguments
-                  as Map<String, dynamic>;
+              as Map<String, dynamic>;
               return EditProfileScreen(
                 userId: args['userId'],
                 profile: args['profile'],
               );
             },
-            WishlistScreen.routeName: (context) => const WishlistScreen(),
+            SelectLocationScreen.routeName: (context) {
+              final args = ModalRoute.of(context)!.settings.arguments;
+              final LatLng initialLocation = (args != null && args is LatLng)
+                  ? args
+                  : LatLng(30.0444, 31.2357); // إحداثيات افتراضية (القاهرة)
+              return SelectLocationScreen(initialLocation: initialLocation);
+            },
           },
           onGenerateRoute: (settings) {
             if (settings.name == ServicesScreen.routeName) {

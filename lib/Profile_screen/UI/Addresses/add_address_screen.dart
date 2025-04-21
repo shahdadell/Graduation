@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:graduation_project/Profile_screen/UI/Addresses/select_location_screen.dart';
 import 'package:graduation_project/Profile_screen/bloc/Address/Address_bloc.dart';
 import 'package:graduation_project/Profile_screen/bloc/Address/Address_event.dart';
 import 'package:graduation_project/Profile_screen/bloc/Address/Address_state.dart';
 import 'package:graduation_project/Theme/theme.dart';
+import 'package:latlong2/latlong.dart';
 import 'addresses_screen.dart'; // صفحة العناوين
 
 class AddAddressScreen extends StatefulWidget {
@@ -122,11 +124,11 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
               color: MyTheme.whiteColor,
             ),
           ).animate().fadeIn(duration: 400.ms).slideY(
-                begin: 0.1,
-                end: 0.0,
-                duration: 400.ms,
-                curve: Curves.easeOut,
-              ),
+            begin: 0.1,
+            end: 0.0,
+            duration: 400.ms,
+            curve: Curves.easeOut,
+          ),
           centerTitle: true,
           backgroundColor: MyTheme.orangeColor,
           elevation: 4,
@@ -381,11 +383,11 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     ),
                   ),
                 ).animate().fadeIn(duration: 600.ms).scale(
-                      begin: Offset(0.9, 0.9),
-                      end: Offset(1.0, 1.0),
-                      duration: 600.ms,
-                      curve: Curves.easeOut,
-                    ),
+                  begin: Offset(0.9, 0.9),
+                  end: Offset(1.0, 1.0),
+                  duration: 600.ms,
+                  curve: Curves.easeOut,
+                ),
               ),
             ),
           ),
@@ -396,30 +398,43 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ElevatedButton.icon(
-                onPressed: () {
-                  latitude = '0';
-                  longitude = '0';
-                  AwesomeDialog(
-                    context: context,
-                    dialogType: DialogType.info,
-                    animType: AnimType.scale,
-                    title: 'Location Selected',
-                    desc: 'Location selected: Lat: $latitude, Long: $longitude',
-                    btnOkText: 'OK',
-                    btnOkColor: MyTheme.orangeColor,
-                    btnOkOnPress: () {},
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                    titleTextStyle: textTheme.displayMedium?.copyWith(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                      color: MyTheme.blackColor,
-                    ),
-                    descTextStyle: textTheme.bodyMedium?.copyWith(
-                      fontSize: 14.sp,
-                      color: MyTheme.grayColor2,
-                    ),
-                  ).show();
+                onPressed: () async {
+                  // نروح للـ SelectLocationScreen ونستني الإحداثيات اللي هترجع
+                  final selectedLocation = await Navigator.pushNamed(
+                    context,
+                    SelectLocationScreen.routeName,
+                    arguments: LatLng(30.0444, 31.2357), // إحداثيات افتراضية (القاهرة)
+                  );
+
+                  // نتأكد إن الإحداثيات رجعت وهي من نوع LatLng
+                  if (selectedLocation != null && selectedLocation is LatLng) {
+                    setState(() {
+                      latitude = selectedLocation.latitude.toString();
+                      longitude = selectedLocation.longitude.toString();
+                    });
+
+                    // نعرض Dialog بيحتوي على الإحداثيات اللي اخترناها
+                    AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.info,
+                      animType: AnimType.scale,
+                      title: 'Location Selected',
+                      desc: 'Location selected: Lat: $latitude, Long: $longitude',
+                      btnOkText: 'OK',
+                      btnOkColor: MyTheme.orangeColor,
+                      btnOkOnPress: () {},
+                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                      titleTextStyle: textTheme.displayMedium?.copyWith(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                        color: MyTheme.blackColor,
+                      ),
+                      descTextStyle: textTheme.bodyMedium?.copyWith(
+                        fontSize: 14.sp,
+                        color: MyTheme.grayColor2,
+                      ),
+                    ).show();
+                  }
                 },
                 icon: Icon(
                   Icons.map,
@@ -435,87 +450,85 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: MyTheme.orangeColor,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   elevation: 3,
                   shadowColor: MyTheme.grayColor3.withOpacity(0.4),
-                  minimumSize: Size(double.infinity, 40.h), // زرار طويل
+                  minimumSize: Size(double.infinity, 40.h),
                 ),
               )
                   .animate()
                   .scale(
-                    begin: Offset(1.0, 1.0),
-                    end: Offset(1.03, 1.03),
-                    duration: Duration(milliseconds: 150),
-                    curve: Curves.easeInOut,
-                  )
+                begin: Offset(1.0, 1.0),
+                end: Offset(1.03, 1.03),
+                duration: Duration(milliseconds: 150),
+                curve: Curves.easeInOut,
+              )
                   .then()
                   .scale(
-                    begin: Offset(1.03, 1.03),
-                    end: Offset(1.0, 1.0),
-                    duration: Duration(milliseconds: 150),
-                    curve: Curves.easeInOut,
-                  ),
+                begin: Offset(1.03, 1.03),
+                end: Offset(1.0, 1.0),
+                duration: Duration(milliseconds: 150),
+                curve: Curves.easeInOut,
+              ),
               SizedBox(height: 8.h),
               ElevatedButton(
                 onPressed: isButtonEnabled
                     ? () {
-                        if (formKey.currentState!.validate()) {
-                          if (latitude.isEmpty || longitude.isEmpty) {
-                            AwesomeDialog(
-                              context: context,
-                              dialogType: DialogType.warning,
-                              animType: AnimType.scale,
-                              title: 'Warning',
-                              desc: 'Please select a location',
-                              btnOkText: 'OK',
-                              btnOkColor: MyTheme.redColor,
-                              btnOkOnPress: () {},
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 16.w, vertical: 16.h),
-                              titleTextStyle: textTheme.displayMedium?.copyWith(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.bold,
-                                color: MyTheme.blackColor,
-                              ),
-                              descTextStyle: textTheme.bodyMedium?.copyWith(
-                                fontSize: 14.sp,
-                                color: MyTheme.grayColor2,
-                              ),
-                            ).show();
-                            return;
-                          }
-                          setState(() {
-                            isButtonEnabled = false; // تعطيل الزر بعد الضغط
-                          });
-                          context.read<AddressBloc>().add(
-                                AddAddressEvent(
-                                  addressName: addressTitleController.text,
-                                  addressPhone: addressPhoneController.text,
-                                  addressCity: addressCityController.text,
-                                  addressStreet: addressDetailsController.text,
-                                  addressLat: latitude,
-                                  addressLong: longitude,
-                                ),
-                              );
-                        }
-                      }
+                  if (formKey.currentState!.validate()) {
+                    if (latitude.isEmpty || longitude.isEmpty) {
+                      AwesomeDialog(
+                        context: context,
+                        dialogType: DialogType.warning,
+                        animType: AnimType.scale,
+                        title: 'Warning',
+                        desc: 'Please select a location',
+                        btnOkText: 'OK',
+                        btnOkColor: MyTheme.redColor,
+                        btnOkOnPress: () {},
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 16.h),
+                        titleTextStyle: textTheme.displayMedium?.copyWith(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                          color: MyTheme.blackColor,
+                        ),
+                        descTextStyle: textTheme.bodyMedium?.copyWith(
+                          fontSize: 14.sp,
+                          color: MyTheme.grayColor2,
+                        ),
+                      ).show();
+                      return;
+                    }
+                    setState(() {
+                      isButtonEnabled = false; // تعطيل الزر بعد الضغط
+                    });
+                    context.read<AddressBloc>().add(
+                      AddAddressEvent(
+                        addressName: addressTitleController.text,
+                        addressPhone: addressPhoneController.text,
+                        addressCity: addressCityController.text,
+                        addressStreet: addressDetailsController.text,
+                        addressLat: latitude,
+                        addressLong: longitude,
+                      ),
+                    );
+                  }
+                }
                     : null, // الزر معطل لو isButtonEnabled = false
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isButtonEnabled
                       ? MyTheme.orangeColor
                       : MyTheme.grayColor, // تغيير اللون لو الزر معطل
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   elevation: 3,
                   shadowColor: MyTheme.grayColor3.withOpacity(0.4),
-                  minimumSize: Size(double.infinity, 40.h), // زرار طويل
+                  minimumSize: Size(double.infinity, 40.h),
                 ),
                 child: Text(
                   'Add Address',
@@ -527,31 +540,30 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
               )
                   .animate()
                   .scale(
-                    begin: Offset(1.0, 1.0),
-                    end: Offset(1.03, 1.03),
-                    duration: Duration(milliseconds: 150),
-                    curve: Curves.easeInOut,
-                  )
+                begin: Offset(1.0, 1.0),
+                end: Offset(1.03, 1.03),
+                duration: Duration(milliseconds: 150),
+                curve: Curves.easeInOut,
+              )
                   .then()
                   .scale(
-                    begin: Offset(1.03, 1.03),
-                    end: Offset(1.0, 1.0),
-                    duration: Duration(milliseconds: 150),
-                    curve: Curves.easeInOut,
-                  ),
+                begin: Offset(1.03, 1.03),
+                end: Offset(1.0, 1.0),
+                duration: Duration(milliseconds: 150),
+                curve: Curves.easeInOut,
+              ),
               SizedBox(height: 8.h),
               ElevatedButton(
                 onPressed: () => Navigator.pop(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: MyTheme.grayColor,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   elevation: 3,
                   shadowColor: MyTheme.grayColor3.withOpacity(0.4),
-                  minimumSize: Size(double.infinity, 40.h), // زرار طويل
+                  minimumSize: Size(double.infinity, 40.h),
                 ),
                 child: Text(
                   'Cancel',
@@ -563,18 +575,18 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
               )
                   .animate()
                   .scale(
-                    begin: Offset(1.0, 1.0),
-                    end: Offset(1.03, 1.03),
-                    duration: Duration(milliseconds: 150),
-                    curve: Curves.easeInOut,
-                  )
+                begin: Offset(1.0, 1.0),
+                end: Offset(1.03, 1.03),
+                duration: Duration(milliseconds: 150),
+                curve: Curves.easeInOut,
+              )
                   .then()
                   .scale(
-                    begin: Offset(1.03, 1.03),
-                    end: Offset(1.0, 1.0),
-                    duration: Duration(milliseconds: 150),
-                    curve: Curves.easeInOut,
-                  ),
+                begin: Offset(1.03, 1.03),
+                end: Offset(1.0, 1.0),
+                duration: Duration(milliseconds: 150),
+                curve: Curves.easeInOut,
+              ),
             ],
           ),
         ),
