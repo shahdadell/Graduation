@@ -22,19 +22,19 @@ Widget buildProfileImage(String? imageUrl, bool isEditing) {
         child: ClipOval(
           child: imageUrl != null && imageUrl.isNotEmpty
               ? Image.network(
-            imageUrl,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) => Icon(
-              Icons.person,
-              size: 60.w,
-              color: MyTheme.grayColor,
-            ),
-          )
+                  imageUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Icon(
+                    Icons.person,
+                    size: 60.w,
+                    color: MyTheme.grayColor,
+                  ),
+                )
               : Icon(
-            Icons.person,
-            size: 60.w,
-            color: MyTheme.grayColor,
-          ),
+                  Icons.person,
+                  size: 60.w,
+                  color: MyTheme.grayColor,
+                ),
         ),
       ),
       if (isEditing)
@@ -44,7 +44,8 @@ Widget buildProfileImage(String? imageUrl, bool isEditing) {
           child: CircleAvatar(
             radius: 20.r,
             backgroundColor: MyTheme.orangeColor,
-            child: Icon(Icons.camera_alt, color: MyTheme.whiteColor, size: 20.w),
+            child:
+                Icon(Icons.camera_alt, color: MyTheme.whiteColor, size: 20.w),
           ),
         ),
     ],
@@ -52,14 +53,14 @@ Widget buildProfileImage(String? imageUrl, bool isEditing) {
 }
 
 Widget buildEditableField(
-    BuildContext context,
-    String label,
-    TextEditingController controller,
-    IconData icon, {
-      bool isEditing = false,
-      bool obscureText = false,
-      TextInputType? keyboardType,
-    }) {
+  BuildContext context,
+  String label,
+  TextEditingController controller,
+  IconData icon, {
+  bool isEditing = false,
+  bool obscureText = false,
+  TextInputType? keyboardType,
+}) {
   final textTheme = Theme.of(context).textTheme;
   return Padding(
     padding: EdgeInsets.symmetric(vertical: 8.h),
@@ -76,72 +77,72 @@ Widget buildEditableField(
         SizedBox(height: 6.h),
         isEditing
             ? TextFormField(
-          controller: controller,
-          obscureText: obscureText,
-          keyboardType: keyboardType,
-          style: textTheme.bodyMedium?.copyWith(
-            color: MyTheme.blackColor,
-            fontSize: 15.sp,
-          ),
-          decoration: InputDecoration(
-            hintText: label == 'Name'
-                ? 'e.g., John Doe'
-                : label == 'Email'
-                ? 'e.g., example@domain.com'
-                : 'e.g., +1234567890',
-            hintStyle: textTheme.bodySmall?.copyWith(
-              color: MyTheme.grayColor2.withOpacity(0.6),
-              fontSize: 13.sp,
-            ),
-            suffixIcon: Icon(
-              icon,
-              color: MyTheme.orangeColor,
-              size: 20.w,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(
-                color: MyTheme.grayColor3.withOpacity(0.3),
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(
-                color: MyTheme.grayColor3.withOpacity(0.3),
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(
-                color: MyTheme.orangeColor,
-                width: 1.5,
-              ),
-            ),
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 14.w,
-              vertical: 14.h,
-            ),
-          ),
-        )
-            : Row(
-          children: [
-            Expanded(
-              child: Text(
-                controller.text,
+                controller: controller,
+                obscureText: obscureText,
+                keyboardType: keyboardType,
                 style: textTheme.bodyMedium?.copyWith(
                   color: MyTheme.blackColor,
                   fontSize: 15.sp,
                 ),
-                overflow: TextOverflow.ellipsis,
+                decoration: InputDecoration(
+                  hintText: label == 'Name'
+                      ? 'e.g., John Doe'
+                      : label == 'Email'
+                          ? 'e.g., example@domain.com'
+                          : 'e.g., +1234567890',
+                  hintStyle: textTheme.bodySmall?.copyWith(
+                    color: MyTheme.grayColor2.withOpacity(0.6),
+                    fontSize: 13.sp,
+                  ),
+                  suffixIcon: Icon(
+                    icon,
+                    color: MyTheme.orangeColor,
+                    size: 20.w,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide(
+                      color: MyTheme.grayColor3.withOpacity(0.3),
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide(
+                      color: MyTheme.grayColor3.withOpacity(0.3),
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide(
+                      color: MyTheme.orangeColor,
+                      width: 1.5,
+                    ),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 14.w,
+                    vertical: 14.h,
+                  ),
+                ),
+              )
+            : Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      controller.text,
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: MyTheme.blackColor,
+                        fontSize: 15.sp,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Icon(
+                    icon,
+                    color: MyTheme.orangeColor,
+                    size: 20.w,
+                  ),
+                ],
               ),
-            ),
-            Icon(
-              icon,
-              color: MyTheme.orangeColor,
-              size: 20.w,
-            ),
-          ],
-        ),
       ],
     ),
   );

@@ -9,9 +9,11 @@ import 'package:graduation_project/Profile_screen/data/model/response/Users%20Ad
 import 'package:graduation_project/local_data/shared_preference.dart';
 
 class AddressRepo {
-  Future<Map<String, String>> _getAuthHeaders({required bool includeAuth}) async {
+  Future<Map<String, String>> _getAuthHeaders(
+      {required bool includeAuth}) async {
     Map<String, String> headers = {
-      'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+      'Content-Type':
+          'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
     };
     if (includeAuth) {
       final String? token = AppLocalStorage.getData('token');
@@ -46,7 +48,8 @@ class AddressRepo {
         if (response.data == null) throw Exception('Response data is null');
         return ViewAddresses.fromJson(response.data);
       }
-      throw Exception('Failed to fetch addresses - Status: ${response.statusCode}');
+      throw Exception(
+          'Failed to fetch addresses - Status: ${response.statusCode}');
     } on DioException catch (e) {
       print('DioException in fetchAddresses: ${e.message}');
       if (e.type == DioExceptionType.connectionTimeout) {
@@ -54,9 +57,11 @@ class AddressRepo {
       } else if (e.type == DioExceptionType.receiveTimeout) {
         throw Exception('Receive timeout while fetching addresses');
       } else if (e.type == DioExceptionType.badResponse) {
-        throw Exception('Bad response: ${e.response?.statusCode} - ${e.response?.data}');
+        throw Exception(
+            'Bad response: ${e.response?.statusCode} - ${e.response?.data}');
       } else if (e.type == DioExceptionType.connectionError) {
-        throw Exception('Connection error: Please check your internet connection');
+        throw Exception(
+            'Connection error: Please check your internet connection');
       } else {
         throw Exception('Error fetching addresses: ${e.message}');
       }
@@ -111,9 +116,11 @@ class AddressRepo {
       } else if (e.type == DioExceptionType.receiveTimeout) {
         throw Exception('Receive timeout while adding address');
       } else if (e.type == DioExceptionType.badResponse) {
-        throw Exception('Bad response: ${e.response?.statusCode} - ${e.response?.data}');
+        throw Exception(
+            'Bad response: ${e.response?.statusCode} - ${e.response?.data}');
       } else if (e.type == DioExceptionType.connectionError) {
-        throw Exception('Connection error: Please check your internet connection');
+        throw Exception(
+            'Connection error: Please check your internet connection');
       } else {
         throw Exception('Error adding address: ${e.message}');
       }
@@ -148,7 +155,8 @@ class AddressRepo {
         if (response.data == null) throw Exception('Response data is null');
         return DeleteAddress.fromJson(response.data);
       }
-      throw Exception('Failed to delete address - Status: ${response.statusCode}');
+      throw Exception(
+          'Failed to delete address - Status: ${response.statusCode}');
     } on DioException catch (e) {
       print('DioException in deleteAddress: ${e.message}');
       if (e.type == DioExceptionType.connectionTimeout) {
@@ -156,9 +164,11 @@ class AddressRepo {
       } else if (e.type == DioExceptionType.receiveTimeout) {
         throw Exception('Receive timeout while deleting address');
       } else if (e.type == DioExceptionType.badResponse) {
-        throw Exception('Bad response: ${e.response?.statusCode} - ${e.response?.data}');
+        throw Exception(
+            'Bad response: ${e.response?.statusCode} - ${e.response?.data}');
       } else if (e.type == DioExceptionType.connectionError) {
-        throw Exception('Connection error: Please check your internet connection');
+        throw Exception(
+            'Connection error: Please check your internet connection');
       } else {
         throw Exception('Error deleting address: ${e.message}');
       }
@@ -207,7 +217,8 @@ class AddressRepo {
         if (response.data == null) throw Exception('Response data is null');
         return EditAddresses.fromJson(response.data);
       }
-      throw Exception('Failed to edit address - Status: ${response.statusCode}');
+      throw Exception(
+          'Failed to edit address - Status: ${response.statusCode}');
     } on DioException catch (e) {
       print('DioException in editAddress: ${e.message}');
       if (e.type == DioExceptionType.connectionTimeout) {
@@ -215,9 +226,11 @@ class AddressRepo {
       } else if (e.type == DioExceptionType.receiveTimeout) {
         throw Exception('Receive timeout while editing address');
       } else if (e.type == DioExceptionType.badResponse) {
-        throw Exception('Bad response: ${e.response?.statusCode} - ${e.response?.data}');
+        throw Exception(
+            'Bad response: ${e.response?.statusCode} - ${e.response?.data}');
       } else if (e.type == DioExceptionType.connectionError) {
-        throw Exception('Connection error: Please check your internet connection');
+        throw Exception(
+            'Connection error: Please check your internet connection');
       } else {
         throw Exception('Error editing address: ${e.message}');
       }

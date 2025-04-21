@@ -15,7 +15,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     on<EditAddressEvent>(_onEditAddress);
   }
 
-  Future<void> _onAddAddress(AddAddressEvent event, Emitter<AddressState> emit) async {
+  Future<void> _onAddAddress(
+      AddAddressEvent event, Emitter<AddressState> emit) async {
     emit(AddAddressLoadingState());
     try {
       final response = await addressRepo.addAddress(
@@ -35,7 +36,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     }
   }
 
-  Future<void> _onFetchAddresses(FetchAddressesEvent event, Emitter<AddressState> emit) async {
+  Future<void> _onFetchAddresses(
+      FetchAddressesEvent event, Emitter<AddressState> emit) async {
     emit(FetchAddressesLoadingState());
     try {
       final response = await addressRepo.fetchAddresses();
@@ -47,10 +49,12 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     }
   }
 
-  Future<void> _onDeleteAddress(DeleteAddressEvent event, Emitter<AddressState> emit) async {
+  Future<void> _onDeleteAddress(
+      DeleteAddressEvent event, Emitter<AddressState> emit) async {
     emit(DeleteAddressLoadingState());
     try {
-      final response = await addressRepo.deleteAddress(addressId: event.addressId);
+      final response =
+          await addressRepo.deleteAddress(addressId: event.addressId);
       print('Delete Address Response: ${response.toJson()}');
       emit(DeleteAddressSuccessState(deleteAddress: response));
       add(FetchAddressesEvent());
@@ -60,13 +64,15 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     }
   }
 
-  Future<void> _onEditAddress(EditAddressEvent event, Emitter<AddressState> emit) async {
+  Future<void> _onEditAddress(
+      EditAddressEvent event, Emitter<AddressState> emit) async {
     emit(EditAddressLoadingState());
     try {
       final response = await addressRepo.editAddress(
         addressId: event.addressId,
         name: event.name,
-        addressPhone: event.phone, // ضفنا addressPhone (باسم phone في EditAddressEvent)
+        addressPhone:
+            event.phone, // ضفنا addressPhone (باسم phone في EditAddressEvent)
         city: event.city,
         street: event.street,
         lat: event.lat,

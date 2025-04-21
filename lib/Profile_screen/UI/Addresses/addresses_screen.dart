@@ -20,7 +20,8 @@ class AddressesScreen extends StatefulWidget {
 
 class _AddressesScreenState extends State<AddressesScreen> {
   bool isDialogShown = false; // تتبع إذا كان الـ Dialog ظهر
-  Map<String, bool> isDeleteButtonEnabled = {}; // تتبع حالة زرار الحذف لكل عنوان
+  Map<String, bool> isDeleteButtonEnabled =
+      {}; // تتبع حالة زرار الحذف لكل عنوان
 
   @override
   Widget build(BuildContext context) {
@@ -48,11 +49,11 @@ class _AddressesScreenState extends State<AddressesScreen> {
             color: MyTheme.whiteColor,
           ),
         ).animate().fadeIn(duration: 400.ms).slideY(
-          begin: 0.1,
-          end: 0.0,
-          duration: 400.ms,
-          curve: Curves.easeOut,
-        ),
+              begin: 0.1,
+              end: 0.0,
+              duration: 400.ms,
+              curve: Curves.easeOut,
+            ),
         centerTitle: true,
         backgroundColor: MyTheme.orangeColor,
         elevation: 4,
@@ -303,7 +304,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                     ),
                     child: ListTile(
                       contentPadding:
-                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                          EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                       leading: CircleAvatar(
                         radius: 18.r,
                         backgroundColor: MyTheme.orangeColor.withOpacity(0.1),
@@ -356,36 +357,39 @@ class _AddressesScreenState extends State<AddressesScreen> {
                             ),
                             onPressed: isDeleteButtonEnabled[addressId]!
                                 ? () {
-                              AwesomeDialog(
-                                context: context,
-                                dialogType: DialogType.warning,
-                                animType: AnimType.scale,
-                                title: 'Delete Address',
-                                desc:
-                                'Are you sure you want to delete this address?',
-                                btnCancelText: 'Cancel',
-                                btnOkText: 'Delete',
-                                btnCancelColor: MyTheme.grayColor,
-                                btnOkColor: MyTheme.redColor,
-                                btnCancelOnPress: () {},
-                                btnOkOnPress: () {
-                                  setState(() {
-                                    isDeleteButtonEnabled[addressId] =
-                                    false; // تعطيل زرار الحذف
-                                  });
-                                  context.read<AddressBloc>().add(
-                                    DeleteAddressEvent(
-                                        addressId: addressId),
-                                  );
-                                },
-                              ).show();
-                            }
+                                    AwesomeDialog(
+                                      context: context,
+                                      dialogType: DialogType.warning,
+                                      animType: AnimType.scale,
+                                      title: 'Delete Address',
+                                      desc:
+                                          'Are you sure you want to delete this address?',
+                                      btnCancelText: 'Cancel',
+                                      btnOkText: 'Delete',
+                                      btnCancelColor: MyTheme.grayColor,
+                                      btnOkColor: MyTheme.redColor,
+                                      btnCancelOnPress: () {},
+                                      btnOkOnPress: () {
+                                        setState(() {
+                                          isDeleteButtonEnabled[addressId] =
+                                              false; // تعطيل زرار الحذف
+                                        });
+                                        context.read<AddressBloc>().add(
+                                              DeleteAddressEvent(
+                                                  addressId: addressId),
+                                            );
+                                      },
+                                    ).show();
+                                  }
                                 : null,
                           ),
                         ],
                       ),
                     ),
-                  ).animate().fadeIn(duration: 400.ms, delay: (100 * index).ms).slideX(begin: -0.1);
+                  )
+                      .animate()
+                      .fadeIn(duration: 400.ms, delay: (100 * index).ms)
+                      .slideX(begin: -0.1);
                 },
               );
             } else if (state is FetchAddressesErrorState) {

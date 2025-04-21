@@ -33,20 +33,24 @@ class ProfileScreen extends StatelessWidget {
               child: CircularProgressIndicator(color: MyTheme.orangeColor),
             ),
           );
-        } else if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
+        } else if (snapshot.hasError ||
+            !snapshot.hasData ||
+            snapshot.data == null) {
           return Scaffold(
             appBar: _buildAppBar(context, textTheme),
             body: Center(
               child: Text(
                 "Error loading user ID or not logged in",
-                style: textTheme.titleMedium?.copyWith(color: MyTheme.grayColor2, fontSize: 14.sp),
+                style: textTheme.titleMedium
+                    ?.copyWith(color: MyTheme.grayColor2, fontSize: 14.sp),
               ),
             ),
           );
         } else {
           final userId = snapshot.data!.toString();
           return BlocProvider(
-            create: (context) => ProfileBloc(ProfileRepo())..add(FetchProfileEvent(userId)),
+            create: (context) =>
+                ProfileBloc(ProfileRepo())..add(FetchProfileEvent(userId)),
             child: Scaffold(
               appBar: _buildAppBar(context, textTheme),
               body: Container(
@@ -62,13 +66,15 @@ class ProfileScreen extends StatelessWidget {
                   builder: (context, state) {
                     if (state is ProfileLoading) {
                       return Center(
-                        child: CircularProgressIndicator(color: MyTheme.orangeColor),
+                        child: CircularProgressIndicator(
+                            color: MyTheme.orangeColor),
                       );
                     } else if (state is ProfileLoaded) {
                       final profile = state.profile.data;
                       return SingleChildScrollView(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16.w, vertical: 24.h),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -105,7 +111,8 @@ class ProfileScreen extends StatelessWidget {
                                         dialogType: DialogType.warning,
                                         animType: AnimType.scale,
                                         title: 'Log Out',
-                                        desc: 'Are you sure you want to log out?',
+                                        desc:
+                                            'Are you sure you want to log out?',
                                         btnCancelText: 'Cancel',
                                         btnOkText: 'Log Out',
                                         btnCancelColor: MyTheme.grayColor,
@@ -134,7 +141,8 @@ class ProfileScreen extends StatelessWidget {
                           children: [
                             Text(
                               "Error: ${state.message}",
-                              style: textTheme.titleMedium?.copyWith(color: MyTheme.redColor, fontSize: 14.sp),
+                              style: textTheme.titleMedium?.copyWith(
+                                  color: MyTheme.redColor, fontSize: 14.sp),
                             ),
                             SizedBox(height: 16.h),
                             _buildButton(
@@ -142,7 +150,9 @@ class ProfileScreen extends StatelessWidget {
                               text: "Retry",
                               color: MyTheme.orangeColor,
                               onPressed: () {
-                                context.read<ProfileBloc>().add(FetchProfileEvent(userId));
+                                context
+                                    .read<ProfileBloc>()
+                                    .add(FetchProfileEvent(userId));
                               },
                             ),
                           ],
@@ -155,7 +165,9 @@ class ProfileScreen extends StatelessWidget {
                         text: "Load Profile",
                         color: MyTheme.orangeColor,
                         onPressed: () {
-                          context.read<ProfileBloc>().add(FetchProfileEvent(userId));
+                          context
+                              .read<ProfileBloc>()
+                              .add(FetchProfileEvent(userId));
                         },
                       ),
                     );
@@ -179,11 +191,11 @@ class ProfileScreen extends StatelessWidget {
           color: MyTheme.whiteColor,
         ),
       ).animate().fadeIn(duration: 400.ms).slideY(
-        begin: 0.1,
-        end: 0.0,
-        duration: 400.ms,
-        curve: Curves.easeOut,
-      ),
+            begin: 0.1,
+            end: 0.0,
+            duration: 400.ms,
+            curve: Curves.easeOut,
+          ),
       centerTitle: true,
       backgroundColor: MyTheme.orangeColor,
       elevation: 4,
@@ -194,9 +206,12 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _buildProfileCard(BuildContext context, dynamic profile) {
-    final nameController = TextEditingController(text: profile?.usersName ?? '');
-    final emailController = TextEditingController(text: profile?.usersEmail ?? '');
-    final phoneController = TextEditingController(text: profile?.usersPhone ?? '');
+    final nameController =
+        TextEditingController(text: profile?.usersName ?? '');
+    final emailController =
+        TextEditingController(text: profile?.usersEmail ?? '');
+    final phoneController =
+        TextEditingController(text: profile?.usersPhone ?? '');
 
     return Container(
       width: double.infinity,
@@ -241,20 +256,20 @@ class ProfileScreen extends StatelessWidget {
         ],
       ),
     ).animate().fadeIn(duration: 500.ms).slideY(
-      begin: 0.1,
-      end: 0.0,
-      duration: 500.ms,
-      curve: Curves.easeOut,
-    );
+          begin: 0.1,
+          end: 0.0,
+          duration: 500.ms,
+          curve: Curves.easeOut,
+        );
   }
 
   Widget _buildButton(
-      BuildContext context, {
-        required String text,
-        required Color color,
-        VoidCallback? onPressed,
-        IconData? icon,
-      }) {
+    BuildContext context, {
+    required String text,
+    required Color color,
+    VoidCallback? onPressed,
+    IconData? icon,
+  }) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
@@ -276,26 +291,29 @@ class ProfileScreen extends StatelessWidget {
           Text(
             text,
             style: Theme.of(context).textTheme.displayMedium?.copyWith(
-              fontSize: 14.sp,
-              color: MyTheme.whiteColor,
-            ),
+                  fontSize: 14.sp,
+                  color: MyTheme.whiteColor,
+                ),
           ),
         ],
       ),
-    ).animate(
-      effects: [
-        const ScaleEffect(
-          begin: Offset(1.0, 1.0),
-          end: Offset(1.05, 1.05),
-          duration: Duration(milliseconds: 200),
+    )
+        .animate(
+          effects: [
+            const ScaleEffect(
+              begin: Offset(1.0, 1.0),
+              end: Offset(1.05, 1.05),
+              duration: Duration(milliseconds: 200),
+              curve: Curves.easeInOut,
+            ),
+          ],
+        )
+        .then()
+        .scale(
+          begin: const Offset(1.05, 1.05),
+          end: const Offset(1.0, 1.0),
+          duration: const Duration(milliseconds: 200),
           curve: Curves.easeInOut,
-        ),
-      ],
-    ).then().scale(
-      begin: const Offset(1.05, 1.05),
-      end: const Offset(1.0, 1.0),
-      duration: const Duration(milliseconds: 200),
-      curve: Curves.easeInOut,
-    );
+        );
   }
 }
