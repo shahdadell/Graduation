@@ -15,7 +15,8 @@ class EditProfileScreen extends StatefulWidget {
   final String userId;
   final dynamic profile;
 
-  const EditProfileScreen({super.key, required this.userId, required this.profile});
+  const EditProfileScreen(
+      {super.key, required this.userId, required this.profile});
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
@@ -29,9 +30,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.profile?.usersName ?? '');
-    _emailController = TextEditingController(text: widget.profile?.usersEmail ?? '');
-    _phoneController = TextEditingController(text: widget.profile?.usersPhone ?? '');
+    _nameController =
+        TextEditingController(text: widget.profile?.usersName ?? '');
+    _emailController =
+        TextEditingController(text: widget.profile?.usersEmail ?? '');
+    _phoneController =
+        TextEditingController(text: widget.profile?.usersPhone ?? '');
   }
 
   @override
@@ -114,7 +118,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               }
               return SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -132,13 +137,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             onPressed: () {
                               if (_validateFields()) {
                                 context.read<ProfileBloc>().add(
-                                  UpdateProfileEvent(
-                                    widget.userId,
-                                    _nameController.text,
-                                    _emailController.text,
-                                    _phoneController.text,
-                                  ),
-                                );
+                                      UpdateProfileEvent(
+                                        widget.userId,
+                                        _nameController.text,
+                                        _emailController.text,
+                                        _phoneController.text,
+                                      ),
+                                    );
                               }
                             },
                           ),
@@ -183,11 +188,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           color: MyTheme.whiteColor,
         ),
       ).animate().fadeIn(duration: 400.ms).slideY(
-        begin: 0.1,
-        end: 0.0,
-        duration: 400.ms,
-        curve: Curves.easeOut,
-      ),
+            begin: 0.1,
+            end: 0.0,
+            duration: 400.ms,
+            curve: Curves.easeOut,
+          ),
       centerTitle: true,
       backgroundColor: MyTheme.orangeColor,
       elevation: 4,
@@ -217,25 +222,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildEditableField(context, "Name", _nameController, Icons.person, isEditing: true),
-          buildEditableField(context, "Email", _emailController, Icons.email, isEditing: true),
-          buildEditableField(context, "Phone", _phoneController, Icons.phone, isEditing: true),
+          buildEditableField(context, "Name", _nameController, Icons.person,
+              isEditing: true),
+          buildEditableField(context, "Email", _emailController, Icons.email,
+              isEditing: true),
+          buildEditableField(context, "Phone", _phoneController, Icons.phone,
+              isEditing: true),
         ],
       ),
     ).animate().fadeIn(duration: 500.ms).slideY(
-      begin: 0.1,
-      end: 0.0,
-      duration: 500.ms,
-      curve: Curves.easeOut,
-    );
+          begin: 0.1,
+          end: 0.0,
+          duration: 500.ms,
+          curve: Curves.easeOut,
+        );
   }
 
   Widget _buildButton(
-      BuildContext context, {
-        required String text,
-        required Color color,
-        VoidCallback? onPressed,
-      }) {
+    BuildContext context, {
+    required String text,
+    required Color color,
+    VoidCallback? onPressed,
+  }) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
@@ -250,24 +258,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       child: Text(
         text,
         style: Theme.of(context).textTheme.displayMedium?.copyWith(
-          fontSize: 14.sp,
-          color: MyTheme.whiteColor,
-        ),
+              fontSize: 14.sp,
+              color: MyTheme.whiteColor,
+            ),
       ),
-    ).animate(
-      effects: [
-        const ScaleEffect(
-          begin: Offset(1.0, 1.0),
-          end: Offset(1.05, 1.05),
-          duration: Duration(milliseconds: 200),
+    )
+        .animate(
+          effects: [
+            const ScaleEffect(
+              begin: Offset(1.0, 1.0),
+              end: Offset(1.05, 1.05),
+              duration: Duration(milliseconds: 200),
+              curve: Curves.easeInOut,
+            ),
+          ],
+        )
+        .then()
+        .scale(
+          begin: const Offset(1.05, 1.05),
+          end: const Offset(1.0, 1.0),
+          duration: const Duration(milliseconds: 200),
           curve: Curves.easeInOut,
-        ),
-      ],
-    ).then().scale(
-      begin: const Offset(1.05, 1.05),
-      end: const Offset(1.0, 1.0),
-      duration: const Duration(milliseconds: 200),
-      curve: Curves.easeInOut,
-    );
+        );
   }
 }

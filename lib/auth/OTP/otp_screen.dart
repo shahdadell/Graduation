@@ -150,6 +150,21 @@ class OtpScreen extends StatelessWidget {
                           duration: 500.ms,
                           curve: Curves.easeOut,
                         ),
+                        SizedBox(height: 5.h),
+                        Text(
+                          "We've sent a code to $email",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.dmSerifDisplay(
+                            color: MyTheme.grayColor2,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ).animate().fadeIn(duration: 500.ms).slideY(
+                          begin: 0.1,
+                          end: 0.0,
+                          duration: 500.ms,
+                          curve: Curves.easeOut,
+                        ),
                         SizedBox(height: 20.h),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

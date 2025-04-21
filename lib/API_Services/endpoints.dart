@@ -38,8 +38,8 @@ class AppEndpoints {
   static const String search = "items/search.php";
 
   //Addresses
-static const String addAddress = 'address/add.php';
-static const String viewAddresses = 'address/view.php';
-static const String deleteAddress = 'address/delet.php';
-static const String editAddress = 'address/edit.php';
+  static const String addAddress = 'address/add.php';
+  static const String viewAddresses = 'address/view.php';
+  static const String deleteAddress = 'address/delet.php';
+  static const String editAddress = 'address/edit.php';
 }

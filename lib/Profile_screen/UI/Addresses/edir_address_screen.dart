@@ -33,12 +33,18 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
   @override
   void initState() {
     super.initState();
-    addressTitleController = TextEditingController(text: widget.address.addressName);
-    addressPhoneController = TextEditingController(text: widget.address.addressPhone ?? '');
-    addressCityController = TextEditingController(text: widget.address.addressCity ?? '');
-    addressDetailsController = TextEditingController(text: widget.address.addressStreet);
-    addressLatitudeController = TextEditingController(text: widget.address.addressLat);
-    addressLongitudeController = TextEditingController(text: widget.address.addressLong);
+    addressTitleController =
+        TextEditingController(text: widget.address.addressName);
+    addressPhoneController =
+        TextEditingController(text: widget.address.addressPhone ?? '');
+    addressCityController =
+        TextEditingController(text: widget.address.addressCity ?? '');
+    addressDetailsController =
+        TextEditingController(text: widget.address.addressStreet);
+    addressLatitudeController =
+        TextEditingController(text: widget.address.addressLat);
+    addressLongitudeController =
+        TextEditingController(text: widget.address.addressLong);
   }
 
   @override
@@ -184,26 +190,31 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                         _buildButton(
                           context,
                           text: "Save Changes",
-                          color: isButtonEnabled ? MyTheme.orangeColor : MyTheme.grayColor,
+                          color: isButtonEnabled
+                              ? MyTheme.orangeColor
+                              : MyTheme.grayColor,
                           onPressed: isButtonEnabled
                               ? () {
-                            if (_validateFields()) {
-                              setState(() {
-                                isButtonEnabled = false; // تعطيل الزر
-                              });
-                              context.read<AddressBloc>().add(
-                                EditAddressEvent(
-                                  addressId: widget.address.addressId ?? '0',
-                                  name: addressTitleController.text,
-                                  phone: addressPhoneController.text,
-                                  city: addressCityController.text,
-                                  street: addressDetailsController.text,
-                                  lat: addressLatitudeController.text,
-                                  long: addressLongitudeController.text,
-                                ),
-                              );
-                            }
-                          }
+                                  if (_validateFields()) {
+                                    setState(() {
+                                      isButtonEnabled = false; // تعطيل الزر
+                                    });
+                                    context.read<AddressBloc>().add(
+                                          EditAddressEvent(
+                                            addressId:
+                                                widget.address.addressId ?? '0',
+                                            name: addressTitleController.text,
+                                            phone: addressPhoneController.text,
+                                            city: addressCityController.text,
+                                            street:
+                                                addressDetailsController.text,
+                                            lat: addressLatitudeController.text,
+                                            long:
+                                                addressLongitudeController.text,
+                                          ),
+                                        );
+                                  }
+                                }
                               : null,
                         ),
                         SizedBox(height: 8.h),
@@ -246,11 +257,11 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
           color: MyTheme.whiteColor,
         ),
       ).animate().fadeIn(duration: 400.ms).slideY(
-        begin: 0.1,
-        end: 0.0,
-        duration: 400.ms,
-        curve: Curves.easeOut,
-      ),
+            begin: 0.1,
+            end: 0.0,
+            duration: 400.ms,
+            curve: Curves.easeOut,
+          ),
       centerTitle: true,
       backgroundColor: MyTheme.orangeColor,
       elevation: 4,
@@ -371,19 +382,19 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
         ),
       ),
     ).animate().fadeIn(duration: 500.ms).slideY(
-      begin: 0.1,
-      end: 0.0,
-      duration: 500.ms,
-      curve: Curves.easeOut,
-    );
+          begin: 0.1,
+          end: 0.0,
+          duration: 500.ms,
+          curve: Curves.easeOut,
+        );
   }
 
   Widget _buildButton(
-      BuildContext context, {
-        required String text,
-        required Color color,
-        VoidCallback? onPressed,
-      }) {
+    BuildContext context, {
+    required String text,
+    required Color color,
+    VoidCallback? onPressed,
+  }) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
@@ -399,20 +410,24 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
       child: Text(
         text,
         style: Theme.of(context).textTheme.displayMedium?.copyWith(
-          fontSize: 13.sp,
-          color: MyTheme.whiteColor,
-        ),
+              fontSize: 13.sp,
+              color: MyTheme.whiteColor,
+            ),
       ),
-    ).animate().scale(
-      begin: Offset(1.0, 1.0),
-      end: Offset(1.03, 1.03),
-      duration: Duration(milliseconds: 150),
-      curve: Curves.easeInOut,
-    ).then().scale(
-      begin: Offset(1.03, 1.03),
-      end: Offset(1.0, 1.0),
-      duration: Duration(milliseconds: 150),
-      curve: Curves.easeInOut,
-    );
+    )
+        .animate()
+        .scale(
+          begin: Offset(1.0, 1.0),
+          end: Offset(1.03, 1.03),
+          duration: Duration(milliseconds: 150),
+          curve: Curves.easeInOut,
+        )
+        .then()
+        .scale(
+          begin: Offset(1.03, 1.03),
+          end: Offset(1.0, 1.0),
+          duration: Duration(milliseconds: 150),
+          curve: Curves.easeInOut,
+        );
   }
 }

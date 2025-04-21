@@ -44,6 +44,4 @@ class EditAddressEvent extends AddressEvent {
     required this.long,
     required this.phone,
   });
-
-  
 }
