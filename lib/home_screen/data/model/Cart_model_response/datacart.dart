@@ -1,7 +1,7 @@
 class Datacart {
   String? cartId;
   String? cartUsersid;
-  String? cartItemsid;
+  String? cartItemsid; // تأكدي إن الحقل ده موجود
   String? cartOrders;
   String? cartQuantity;
   String? itemsName;
@@ -10,9 +10,6 @@ class Datacart {
   String? itemsCat;
   String? itemsDiscount;
   String? totalPrice;
-  String? categoriesId; // الحقل الجديد
-  String? categoriesName; // الحقل الجديد
-  String? categoriesNameAr; // الحقل الجديد
 
   Datacart({
     this.cartId,
@@ -26,15 +23,12 @@ class Datacart {
     this.itemsCat,
     this.itemsDiscount,
     this.totalPrice,
-    this.categoriesId,
-    this.categoriesName,
-    this.categoriesNameAr,
   });
 
   Datacart.fromJson(Map<String, dynamic> json) {
     cartId = json['cart_id']?.toString();
     cartUsersid = json['cart_usersid']?.toString();
-    cartItemsid = json['cart_itemsid']?.toString();
+    cartItemsid = json['cart_itemsid']?.toString(); // التأكد من الحقل ده
     cartOrders = json['cart_orders']?.toString();
     cartQuantity = json['cart_quantity']?.toString();
     itemsName = json['items_name']?.toString();
@@ -43,9 +37,6 @@ class Datacart {
     itemsCat = json['items_cat']?.toString();
     itemsDiscount = json['items_discount']?.toString();
     totalPrice = json['total_price']?.toString();
-    categoriesId = json['categories_id']?.toString();
-    categoriesName = json['categories_name']?.toString();
-    categoriesNameAr = json['categories_name_ar']?.toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -61,9 +52,6 @@ class Datacart {
     data['items_cat'] = itemsCat;
     data['items_discount'] = itemsDiscount;
     data['total_price'] = totalPrice;
-    data['categories_id'] = categoriesId;
-    data['categories_name'] = categoriesName;
-    data['categories_name_ar'] = categoriesNameAr;
     return data;
   }
 }
