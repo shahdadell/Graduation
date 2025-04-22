@@ -183,8 +183,19 @@ class ProfileScreen extends StatelessWidget {
 
   PreferredSizeWidget _buildAppBar(BuildContext context, TextTheme textTheme) {
     return AppBar(
+      leading: InkWell(
+        onTap: () => Navigator.pop(context),
+        child: Padding(
+          padding: EdgeInsets.all(12.w),
+          child: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: MyTheme.whiteColor,
+            size: 24.w,
+          ),
+        ),
+      ).animate().scale(duration: 200.ms, curve: Curves.easeInOut),
       title: Text(
-        "My Profile",
+        "Edit Profile",
         style: textTheme.displayLarge?.copyWith(
           fontSize: 20.sp,
           fontWeight: FontWeight.bold,

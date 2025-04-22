@@ -27,6 +27,8 @@ import 'package:graduation_project/Profile_screen/data/repo/Address_repo.dart';
 import 'package:latlong2/latlong.dart';
 import 'dart:ui' as ui;
 
+import 'home_screen/UI/Cart_Page/orders_screen.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -66,6 +68,7 @@ class MyApp extends StatelessWidget {
             SignUpScreen.routeName: (context) => const SignUpScreen(),
             OtpScreen.routName: (context) => OtpScreen(email: ''),
             SearchScreen.routeName: (context) => const SearchScreen(),
+            OrdersScreen.routeName: (context) => const OrdersScreen(),
             OtpScreenForgetPassword.routName: (context) =>
             const OtpScreenForgetPassword(),
             ForgetPassword.routName: (context) => const ForgetPassword(),

@@ -5,7 +5,9 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:graduation_project/Profile_screen/UI/Profile/profile_screen.dart';
 import 'package:graduation_project/Theme/theme.dart';
 import 'package:graduation_project/home_screen/UI/Home_Page/home_screen.dart';
-import 'package:graduation_project/home_screen/Wishlist_Screen/UI/WishlistScreen.dart'; // HomeScreen
+import 'package:graduation_project/home_screen/Wishlist_Screen/UI/WishlistScreen.dart';
+import '../home_screen/UI/Cart_Page/CartScreen.dart';
+import '../home_screen/UI/Cart_Page/orders_screen.dart'; // افترضنا إن في شاشة Orders
 
 class NavBarWidget extends StatefulWidget {
   const NavBarWidget({super.key, this.preIndex});
@@ -26,8 +28,10 @@ class _NavBarWidgetState extends State<NavBarWidget> {
 
   List<Widget> pages = [
     const HomeScreen(),
+    const OrdersScreen(), // أضفنا شاشة الأوردرز
+    const CartScreen(), // أضفنا شاشة الكارت
     const WishlistScreen(),
-    const ProfileScreen(),
+    // const ProfileScreen(),
   ];
 
   @override
@@ -81,17 +85,29 @@ class _NavBarWidgetState extends State<NavBarWidget> {
                 iconColor: MyTheme.grayColor2,
               ),
               GButton(
+                icon: Icons.list_alt_outlined,
+                text: 'Orders',
+                iconActiveColor: MyTheme.orangeColor2,
+                iconColor: MyTheme.grayColor2,
+              ),
+              GButton(
+                icon: Icons.shopping_cart_outlined,
+                text: 'Cart',
+                iconActiveColor: MyTheme.orangeColor2,
+                iconColor: MyTheme.grayColor2,
+              ),
+              GButton(
                 icon: Icons.favorite_border,
                 text: 'Favorite',
                 iconActiveColor: MyTheme.orangeColor2,
                 iconColor: MyTheme.grayColor2,
               ),
-              GButton(
-                icon: Icons.person_outline,
-                text: 'Profile',
-                iconActiveColor: MyTheme.orangeColor2,
-                iconColor: MyTheme.grayColor2,
-              ),
+              // GButton(
+              //   icon: Icons.person_outline,
+              //   text: 'Profile',
+              //   iconActiveColor: MyTheme.orangeColor2,
+              //   iconColor: MyTheme.grayColor2,
+              // ),
             ],
             selectedIndex: currentPage,
             onTabChange: (index) {

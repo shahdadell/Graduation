@@ -14,6 +14,8 @@ import '../../data/model/Cart_model_response/CartViewResponse.dart';
 import '../../data/model/Cart_model_response/datacart.dart';
 
 class CartScreen extends StatefulWidget {
+  static const String routeName = '/cart';
+
   const CartScreen({super.key});
 
   @override
@@ -59,7 +61,7 @@ class _CartScreenState extends State<CartScreen> {
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     padding:
-                        EdgeInsets.symmetric(horizontal: 30.w, vertical: 12.h),
+                    EdgeInsets.symmetric(horizontal: 30.w, vertical: 12.h),
                     elevation: 5,
                     shadowColor: MyTheme.orangeColor.withOpacity(0.4),
                   ),
@@ -193,7 +195,7 @@ class _CartScreenState extends State<CartScreen> {
                         Text(
                           'Loading your cart...',
                           style:
-                              MyTheme.lightTheme.textTheme.titleSmall?.copyWith(
+                          MyTheme.lightTheme.textTheme.titleSmall?.copyWith(
                             fontSize: 18.sp,
                             color: MyTheme.mauveColor,
                           ),
@@ -274,7 +276,7 @@ class _CartScreenState extends State<CartScreen> {
                       Text(
                         'Loading your cart...',
                         style:
-                            MyTheme.lightTheme.textTheme.titleSmall?.copyWith(
+                        MyTheme.lightTheme.textTheme.titleSmall?.copyWith(
                           fontSize: 18.sp,
                           color: MyTheme.mauveColor,
                         ),
@@ -388,29 +390,29 @@ class _CartScreenState extends State<CartScreen> {
                           borderRadius: BorderRadius.circular(8.r),
                           child: item.itemsImage != null
                               ? CachedNetworkImage(
-                                  imageUrl: item.itemsImage!,
-                                  width: 70.w,
-                                  height: 60.h,
-                                  fit: BoxFit.cover,
-                                  memCacheHeight: (60.h).toInt(),
-                                  memCacheWidth: (60.w).toInt(),
-                                  placeholder: (context, url) => Center(
-                                    child: CircularProgressIndicator(
-                                      color: MyTheme.orangeColor,
-                                      strokeWidth: 2.w,
-                                    ),
-                                  ),
-                                  errorWidget: (context, url, error) => Icon(
-                                    Icons.fastfood_rounded,
-                                    size: 24.w,
-                                    color: MyTheme.orangeColor,
-                                  ),
-                                )
+                            imageUrl: item.itemsImage!,
+                            width: 70.w,
+                            height: 60.h,
+                            fit: BoxFit.cover,
+                            memCacheHeight: (60.h).toInt(),
+                            memCacheWidth: (60.w).toInt(),
+                            placeholder: (context, url) => Center(
+                              child: CircularProgressIndicator(
+                                color: MyTheme.orangeColor,
+                                strokeWidth: 2.w,
+                              ),
+                            ),
+                            errorWidget: (context, url, error) => Icon(
+                              Icons.fastfood_rounded,
+                              size: 24.w,
+                              color: MyTheme.orangeColor,
+                            ),
+                          )
                               : Icon(
-                                  Icons.fastfood_rounded,
-                                  size: 24.w,
-                                  color: MyTheme.orangeColor,
-                                ),
+                            Icons.fastfood_rounded,
+                            size: 24.w,
+                            color: MyTheme.orangeColor,
+                          ),
                         ),
                         SizedBox(width: 12.w),
                         // التفاصيل
@@ -467,21 +469,21 @@ class _CartScreenState extends State<CartScreen> {
                               onTap: () {
                                 if (item.cartItemsid != null &&
                                     (int.tryParse(item.cartQuantity ?? '0') ??
-                                            0) >
+                                        0) >
                                         1) {
                                   context
                                       .read<CartBloc>()
                                       .add(DeleteCartItemEvent(
-                                        userId: userId,
-                                        itemId: int.parse(item.cartItemsid!),
-                                      ));
+                                    userId: userId,
+                                    itemId: int.parse(item.cartItemsid!),
+                                  ));
                                 } else if (item.cartItemsid != null) {
                                   context
                                       .read<CartBloc>()
                                       .add(DeleteCartItemEvent(
-                                        userId: userId,
-                                        itemId: int.parse(item.cartItemsid!),
-                                      ));
+                                    userId: userId,
+                                    itemId: int.parse(item.cartItemsid!),
+                                  ));
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
@@ -521,10 +523,10 @@ class _CartScreenState extends State<CartScreen> {
                               onTap: () {
                                 if (item.cartItemsid != null) {
                                   context.read<CartBloc>().add(AddToCartEvent(
-                                        userId: userId,
-                                        itemId: int.parse(item.cartItemsid!),
-                                        quantity: 1,
-                                      ));
+                                    userId: userId,
+                                    itemId: int.parse(item.cartItemsid!),
+                                    quantity: 1,
+                                  ));
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
@@ -554,26 +556,26 @@ class _CartScreenState extends State<CartScreen> {
                               onTap: isLoading
                                   ? null
                                   : () {
-                                      if (item.cartItemsid != null) {
-                                        context
-                                            .read<CartBloc>()
-                                            .add(DeleteCartItemEvent(
-                                              userId: userId,
-                                              itemId:
-                                                  int.parse(item.cartItemsid!),
-                                            ));
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                                'Cannot remove item: Missing item ID'),
-                                            backgroundColor: Colors.redAccent,
-                                            duration: Duration(seconds: 2),
-                                          ),
-                                        );
-                                      }
-                                    },
+                                if (item.cartItemsid != null) {
+                                  context
+                                      .read<CartBloc>()
+                                      .add(DeleteCartItemEvent(
+                                    userId: userId,
+                                    itemId:
+                                    int.parse(item.cartItemsid!),
+                                  ));
+                                } else {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          'Cannot remove item: Missing item ID'),
+                                      backgroundColor: Colors.redAccent,
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                }
+                              },
                               child: Container(
                                 padding: EdgeInsets.all(5.w),
                                 decoration: BoxDecoration(
@@ -582,18 +584,18 @@ class _CartScreenState extends State<CartScreen> {
                                 ),
                                 child: isLoading
                                     ? SizedBox(
-                                        width: 18.w,
-                                        height: 18.w,
-                                        child: CircularProgressIndicator(
-                                          color: MyTheme.redColor,
-                                          strokeWidth: 2.w,
-                                        ),
-                                      )
+                                  width: 18.w,
+                                  height: 18.w,
+                                  child: CircularProgressIndicator(
+                                    color: MyTheme.redColor,
+                                    strokeWidth: 2.w,
+                                  ),
+                                )
                                     : Icon(
-                                        Icons.delete_rounded,
-                                        size: 18.w,
-                                        color: MyTheme.redColor,
-                                      ),
+                                  Icons.delete_rounded,
+                                  size: 18.w,
+                                  color: MyTheme.redColor,
+                                ),
                               ),
                             ),
                           ],
@@ -663,24 +665,8 @@ class _CartScreenState extends State<CartScreen> {
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
           child: ElevatedButton(
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Row(
-                    children: [
-                      Icon(Icons.payment_rounded,
-                          color: MyTheme.whiteColor, size: 16.w),
-                      SizedBox(width: 8.w),
-                      Text('Proceed to checkout!'),
-                    ],
-                  ),
-                  backgroundColor: MyTheme.greenColor,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  duration: const Duration(seconds: 2),
-                ),
-              );
+              // التنقل إلى OrdersScreen مع تمرير الـ totalPrice
+              Navigator.pushNamed(context, '/orders', arguments: totalPrice);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: MyTheme.orangeColor,
@@ -695,13 +681,13 @@ class _CartScreenState extends State<CartScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.payment_rounded,
+                  Icons.receipt_long_rounded,
                   size: 18.w,
                   color: MyTheme.whiteColor,
                 ),
                 SizedBox(width: 8.w),
                 Text(
-                  'Checkout (${totalPrice.toStringAsFixed(2)} EGP)',
+                  'Place Order (${totalPrice.toStringAsFixed(2)} EGP)',
                   style: MyTheme.lightTheme.textTheme.displayMedium?.copyWith(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
@@ -743,31 +729,31 @@ class _CartScreenState extends State<CartScreen> {
               color: MyTheme.grayColor2,
             ),
           ),
-          SizedBox(height: 20.h),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(
-                context,
-                HomeScreen.routName,
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: MyTheme.orangeColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 8.h),
-              elevation: 5,
-              shadowColor: MyTheme.orangeColor.withOpacity(0.4),
-            ),
-            child: Text(
-              'Start Shopping',
-              style: MyTheme.lightTheme.textTheme.displayMedium?.copyWith(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
+          // SizedBox(height: 20.h),
+          // ElevatedButton(
+          //   onPressed: () {
+          //     Navigator.pushReplacementNamed(
+          //       context,
+          //       HomeScreen.routName,
+          //     );
+          //   },
+          //   style: ElevatedButton.styleFrom(
+          //     backgroundColor: MyTheme.orangeColor,
+          //     shape: RoundedRectangleBorder(
+          //       borderRadius: BorderRadius.circular(12.r),
+          //     ),
+          //     padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 8.h),
+          //     elevation: 5,
+          //     shadowColor: MyTheme.orangeColor.withOpacity(0.4),
+          //   ),
+          //   child: Text(
+          //     'Start Shopping',
+          //     style: MyTheme.lightTheme.textTheme.displayMedium?.copyWith(
+          //       fontSize: 16.sp,
+          //       fontWeight: FontWeight.w600,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
