@@ -26,6 +26,7 @@ import 'package:graduation_project/Profile_screen/UI/Profile/profile_screen.dart
 import 'package:graduation_project/Profile_screen/UI/Profile/edit_profile_screen.dart';
 import 'package:graduation_project/Profile_screen/bloc/Address/Address_bloc.dart';
 import 'package:graduation_project/Profile_screen/data/repo/Address_repo.dart';
+import 'home_screen/UI/Cart_Page/order_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,8 +68,11 @@ class MyApp extends StatelessWidget {
             MainScreen.routName: (context) => const MainScreen(),
             SignInScreen.routName: (context) => const SignInScreen(),
             SignUpScreen.routeName: (context) => const SignUpScreen(),
-            OtpScreen.routName: (context) =>  OtpScreen(email: '',),
+            OtpScreen.routName: (context) => OtpScreen(
+                  email: '',
+                ),
             SearchScreen.routeName: (context) => const SearchScreen(),
+            OrderScreen.routeName: (context) => const OrderScreen(),
             OtpScreenForgetPassword.routName: (context) =>
                 const OtpScreenForgetPassword(),
             ForgetPassword.routName: (context) => const ForgetPassword(),

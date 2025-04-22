@@ -119,41 +119,41 @@ class TopSellingListWidget extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 20.h),
-                      GestureDetector(
-                        onTap: () {
-                          context.read<HomeBloc>().add(FetchTopSellingEvent());
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 30.w, vertical: 12.h),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                MyTheme.orangeColor,
-                                Colors.orangeAccent,
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(30.r),
-                            boxShadow: [
-                              BoxShadow(
-                                color: MyTheme.orangeColor.withOpacity(0.4),
-                                blurRadius: 8.r,
-                                spreadRadius: 2.r,
-                              ),
-                            ],
-                          ),
-                          child: Text(
-                            "Try Again",
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     context.read<HomeBloc>().add(FetchTopSellingEvent());
+                      //   },
+                      //   child: Container(
+                      //     padding: EdgeInsets.symmetric(
+                      //         horizontal: 30.w, vertical: 12.h),
+                      //     decoration: BoxDecoration(
+                      //       gradient: LinearGradient(
+                      //         colors: [
+                      //           MyTheme.orangeColor,
+                      //           Colors.orangeAccent,
+                      //         ],
+                      //         begin: Alignment.topLeft,
+                      //         end: Alignment.bottomRight,
+                      //       ),
+                      //       borderRadius: BorderRadius.circular(30.r),
+                      //       boxShadow: [
+                      //         BoxShadow(
+                      //           color: MyTheme.orangeColor.withOpacity(0.4),
+                      //           blurRadius: 8.r,
+                      //           spreadRadius: 2.r,
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     child: Text(
+                      //       "Try Again",
+                      //       style: TextStyle(
+                      //         fontSize: 16.sp,
+                      //         fontWeight: FontWeight.bold,
+                      //         color: Colors.white,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
