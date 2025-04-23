@@ -26,6 +26,8 @@ import 'package:graduation_project/Profile_screen/UI/Profile/profile_screen.dart
 import 'package:graduation_project/Profile_screen/UI/Profile/edit_profile_screen.dart';
 import 'package:graduation_project/Profile_screen/bloc/Address/Address_bloc.dart';
 import 'package:graduation_project/Profile_screen/data/repo/Address_repo.dart';
+import 'package:graduation_project/home_screen/UI/Cart_Page/order_screen.dart';
+import 'package:graduation_project/home_screen/UI/Notification_Page/notification_screen.dart'; // استيراد الصفحة الجديدة
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,8 +55,7 @@ class MyApp extends StatelessWidget {
             create: (context) => AddressBloc(AddressRepo()),
           ),
           BlocProvider(
-            create: (context) => FavoriteBloc(
-                favoriteRepo: FavoriteRepo()), // أضفنا الـ FavoriteBloc هنا
+            create: (context) => FavoriteBloc(favoriteRepo: FavoriteRepo()),
           ),
         ],
         child: MaterialApp(
@@ -67,8 +68,9 @@ class MyApp extends StatelessWidget {
             MainScreen.routName: (context) => const MainScreen(),
             SignInScreen.routName: (context) => const SignInScreen(),
             SignUpScreen.routeName: (context) => const SignUpScreen(),
-            OtpScreen.routName: (context) =>  OtpScreen(email: '',),
+            OtpScreen.routName: (context) => OtpScreen(email: ''),
             SearchScreen.routeName: (context) => const SearchScreen(),
+            OrderScreen.routeName: (context) => const OrderScreen(),
             OtpScreenForgetPassword.routName: (context) =>
                 const OtpScreenForgetPassword(),
             ForgetPassword.routName: (context) => const ForgetPassword(),
@@ -92,6 +94,7 @@ class MyApp extends StatelessWidget {
               );
             },
             WishlistScreen.routeName: (context) => const WishlistScreen(),
+            NotificationScreen.routeName: (context) => const NotificationScreen(), // إضافة مسار الإشعارات
           },
           onGenerateRoute: (settings) {
             if (settings.name == ServicesScreen.routeName) {

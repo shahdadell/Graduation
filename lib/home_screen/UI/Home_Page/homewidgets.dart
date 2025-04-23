@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/Theme/theme.dart';
 import 'package:graduation_project/app_images/app_images.dart';
-import 'package:graduation_project/home_screen/UI/Cart_Page/CartScreen.dart';
 import 'package:graduation_project/Theme/style.dart';
 import 'package:graduation_project/home_screen/UI/Home_Page/homevariables.dart';
+import 'package:graduation_project/home_screen/UI/Notification_Page/notification_screen.dart';
 import 'package:graduation_project/local_data/shared_preference.dart';
-import '../../bloc/Cart/cart_bloc.dart';
-import '../../bloc/Cart/cart_event.dart';
-import '../../bloc/Cart/cart_state.dart';
-import '../../data/repo/cart_repo.dart';
+import '../../../Profile_screen/UI/Profile/profile_screen.dart';
 
 Widget homeTopBar(BuildContext context) {
   String greeting = getGreetingMessage();
@@ -22,8 +17,10 @@ Widget homeTopBar(BuildContext context) {
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
       InkWell(
-        onTap: () {},
-        overlayColor: WidgetStatePropertyAll(MyTheme.transparent),
+        onTap: () {
+          Navigator.pushNamed(context, NotificationScreen.routeName); // التنقل لصفحة الإشعارات
+        },
+        overlayColor:  WidgetStatePropertyAll(MyTheme.transparent),
         child: Icon(
           IconlyLight.notification,
           size: 24,
@@ -97,81 +94,29 @@ Widget homeTopBar(BuildContext context) {
           ],
         ),
       ),
-      BlocProvider(
-        create: (context) => CartBloc(cartRepo: CartRepo())
-          ..add(FetchCartEvent(userId: userId ?? 0)),
-        child: BlocBuilder<CartBloc, CartState>(
-          builder: (context, state) {
-            int itemsCount = 0;
-            if (state is FetchCartSuccessState && userId != null) {
-              final cart = state.cartViewResponse;
-              final restCafeItems = cart.restCafe?.datacart ?? [];
-              final hotelTouristItems = cart.hotelTourist?.datacart ?? [];
-              itemsCount = [...restCafeItems, ...hotelTouristItems].length;
-            }
-            return InkWell(
-              onTap: () {
-                if (userId == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text('Please log in to view your cart')),
-                  );
-                } else {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const CartScreen()),
-                  );
-                }
-              },
-              overlayColor: WidgetStatePropertyAll(MyTheme.transparent),
-              child: Stack(
-                alignment: Alignment.topRight,
-                children: [
-                  Icon(
-                    IconlyLight.bag,
-                    size: 24,
-                    color: MyTheme.mauveColor,
-                  ),
-                  if (itemsCount > 0)
-                    Positioned(
-                      right: 0,
-                      top: 0,
-                      child: Container(
-                        width: 14.w,
-                        height: 14.w,
-                        decoration: BoxDecoration(
-                          color: MyTheme.orangeColor,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: MyTheme.orangeColor.withOpacity(0.4),
-                              blurRadius: 4.r,
-                              spreadRadius: 1.r,
-                            ),
-                          ],
-                        ),
-                        child: Center(
-                          child: Text(
-                            '$itemsCount',
-                            style: TextStyle(
-                              color: MyTheme.whiteColor,
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
+      InkWell(
+        onTap: () {
+          if (userId == null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('من فضلك سجل الدخول لعرض ملفك الشخصي')),
             );
-          },
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfileScreen()),
+            );
+          }
+        },
+        overlayColor:  WidgetStatePropertyAll(MyTheme.transparent),
+        child: Icon(
+          IconlyLight.profile,
+          size: 24,
+          color: MyTheme.mauveColor,
         ),
       ),
     ],
   );
 }
-
 Widget carouselSliderImage(String image) {
   return ClipRRect(
     borderRadius: BorderRadius.circular(12),

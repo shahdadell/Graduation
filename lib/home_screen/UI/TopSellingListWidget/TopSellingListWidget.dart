@@ -1,10 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/Theme/theme.dart';
 import 'package:graduation_project/home_screen/bloc/Home/home_bloc.dart';
-import 'package:graduation_project/home_screen/bloc/Home/home_state.dart';
 import 'package:graduation_project/home_screen/bloc/Home/home_event.dart';
+import 'package:graduation_project/home_screen/bloc/Home/home_state.dart';
 import 'TopSellingPage/AllTopSellingPage.dart';
 import 'top_selling_card.dart';
 
@@ -36,13 +37,15 @@ class TopSellingListWidget extends StatelessWidget {
         SizedBox(height: 10.h),
         BlocBuilder<HomeBloc, HomeState>(
           buildWhen: (previous, current) {
-            return current is FetchTopSellingLoadingState ||
-                current is FetchTopSellingSuccessState ||
-                current is FetchTopSellingErrorState;
+            return current is FetchLoadingHomeDataState ||
+                current is FetchSuccessHomeDataState ||
+                current is HomeErrorState;
           },
           builder: (context, state) {
-            print("TopSellingListWidget State: $state");
-            if (state is FetchTopSellingLoadingState) {
+            if (kDebugMode) {
+              print("TopSellingListWidget State: $state");
+            }
+            if (state is FetchLoadingHomeDataState) {
               return Container(
                 height: 200.h,
                 child: Center(
@@ -53,38 +56,41 @@ class TopSellingListWidget extends StatelessWidget {
                   ),
                 ),
               );
-            } else if (state is FetchTopSellingSuccessState) {
-              print("Top Selling Items Loaded: ${state.topSelling.length}");
-              final itemCount =
-                  state.topSelling.length > 4 ? 5 : state.topSelling.length;
+            } else if (state is FetchSuccessHomeDataState) {
+              if (kDebugMode) {
+                print("Top Selling Items Loaded: ${state.topSelling.length}");
+              }
+              final itemCount = state.topSelling.length > 4 ? 5 : state.topSelling.length;
               return SizedBox(
                 height: 200.h,
                 child: state.topSelling.isEmpty
                     ? Center(
-                        child: Text(
-                          "Nothing Hot Yet!",
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            color: Colors.grey[500],
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      )
+                  child: Text(
+                    "No top selling items available",
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      color: Colors.grey[500],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                )
                     : ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        padding: EdgeInsets.symmetric(horizontal: 15.w),
-                        itemCount: itemCount,
-                        itemBuilder: (context, index) {
-                          if (index == 4 && state.topSelling.length > 4) {
-                            return _buildShowMoreCard(context);
-                          }
-                          final item = state.topSelling[index];
-                          return buildTopSellingCard(context, item);
-                        },
-                      ),
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.symmetric(horizontal: 15.w),
+                  itemCount: itemCount,
+                  itemBuilder: (context, index) {
+                    if (index == 4 && state.topSelling.length > 4) {
+                      return _buildShowMoreCard(context);
+                    }
+                    final item = state.topSelling[index];
+                    return buildTopSellingCard(context, item);
+                  },
+                ),
               );
-            } else if (state is FetchTopSellingErrorState) {
-              print("Top Selling Error: ${state.message}");
+            } else if (state is HomeErrorState) {
+              if (kDebugMode) {
+                print("Top Selling Error: ${state.message}");
+              }
               return Container(
                 height: 200.h,
                 child: Center(
@@ -121,7 +127,7 @@ class TopSellingListWidget extends StatelessWidget {
                       SizedBox(height: 20.h),
                       GestureDetector(
                         onTap: () {
-                          context.read<HomeBloc>().add(FetchTopSellingEvent());
+                          context.read<HomeBloc>().add(FetchHomeDataEvent(null));
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(
@@ -159,7 +165,9 @@ class TopSellingListWidget extends StatelessWidget {
                 ),
               );
             }
-            print("Initial Fallback State: $state");
+            if (kDebugMode) {
+              print("Initial Fallback State: $state");
+            }
             return Container(
               height: 200.h,
               child: Center(
@@ -181,9 +189,7 @@ class TopSellingListWidget extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  const AllTopSellingPage()), // التنقل لصفحة Top Selling
+          MaterialPageRoute(builder: (context) => const AllTopSellingPage()),
         );
       },
       child: Container(

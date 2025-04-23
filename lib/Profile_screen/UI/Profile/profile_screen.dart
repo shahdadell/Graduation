@@ -50,7 +50,7 @@ class ProfileScreen extends StatelessWidget {
           final userId = snapshot.data!.toString();
           return BlocProvider(
             create: (context) =>
-                ProfileBloc(ProfileRepo())..add(FetchProfileEvent(userId)),
+            ProfileBloc(ProfileRepo())..add(FetchProfileEvent(userId)),
             child: Scaffold(
               appBar: _buildAppBar(context, textTheme),
               body: Container(
@@ -112,7 +112,7 @@ class ProfileScreen extends StatelessWidget {
                                         animType: AnimType.scale,
                                         title: 'Log Out',
                                         desc:
-                                            'Are you sure you want to log out?',
+                                        'Are you sure you want to log out?',
                                         btnCancelText: 'Cancel',
                                         btnOkText: 'Log Out',
                                         btnCancelColor: MyTheme.grayColor,
@@ -183,6 +183,17 @@ class ProfileScreen extends StatelessWidget {
 
   PreferredSizeWidget _buildAppBar(BuildContext context, TextTheme textTheme) {
     return AppBar(
+      leading: InkWell(
+        onTap: () => Navigator.pop(context),
+        child: Padding(
+          padding: EdgeInsets.all(12.w),
+          child: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: MyTheme.whiteColor,
+            size: 24.w,
+          ),
+        ),
+      ),
       title: Text(
         "My Profile",
         style: textTheme.displayLarge?.copyWith(
@@ -191,11 +202,11 @@ class ProfileScreen extends StatelessWidget {
           color: MyTheme.whiteColor,
         ),
       ).animate().fadeIn(duration: 400.ms).slideY(
-            begin: 0.1,
-            end: 0.0,
-            duration: 400.ms,
-            curve: Curves.easeOut,
-          ),
+        begin: 0.1,
+        end: 0.0,
+        duration: 400.ms,
+        curve: Curves.easeOut,
+      ),
       centerTitle: true,
       backgroundColor: MyTheme.orangeColor,
       elevation: 4,
@@ -207,11 +218,11 @@ class ProfileScreen extends StatelessWidget {
 
   Widget _buildProfileCard(BuildContext context, dynamic profile) {
     final nameController =
-        TextEditingController(text: profile?.usersName ?? '');
+    TextEditingController(text: profile?.usersName ?? '');
     final emailController =
-        TextEditingController(text: profile?.usersEmail ?? '');
+    TextEditingController(text: profile?.usersEmail ?? '');
     final phoneController =
-        TextEditingController(text: profile?.usersPhone ?? '');
+    TextEditingController(text: profile?.usersPhone ?? '');
 
     return Container(
       width: double.infinity,
@@ -256,20 +267,20 @@ class ProfileScreen extends StatelessWidget {
         ],
       ),
     ).animate().fadeIn(duration: 500.ms).slideY(
-          begin: 0.1,
-          end: 0.0,
-          duration: 500.ms,
-          curve: Curves.easeOut,
-        );
+      begin: 0.1,
+      end: 0.0,
+      duration: 500.ms,
+      curve: Curves.easeOut,
+    );
   }
 
   Widget _buildButton(
-    BuildContext context, {
-    required String text,
-    required Color color,
-    VoidCallback? onPressed,
-    IconData? icon,
-  }) {
+      BuildContext context, {
+        required String text,
+        required Color color,
+        VoidCallback? onPressed,
+        IconData? icon,
+      }) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
@@ -291,29 +302,29 @@ class ProfileScreen extends StatelessWidget {
           Text(
             text,
             style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                  fontSize: 14.sp,
-                  color: MyTheme.whiteColor,
-                ),
+              fontSize: 14.sp,
+              color: MyTheme.whiteColor,
+            ),
           ),
         ],
       ),
     )
         .animate(
-          effects: [
-            const ScaleEffect(
-              begin: Offset(1.0, 1.0),
-              end: Offset(1.05, 1.05),
-              duration: Duration(milliseconds: 200),
-              curve: Curves.easeInOut,
-            ),
-          ],
-        )
+      effects: [
+        const ScaleEffect(
+          begin: Offset(1.0, 1.0),
+          end: Offset(1.05, 1.05),
+          duration: Duration(milliseconds: 200),
+          curve: Curves.easeInOut,
+        ),
+      ],
+    )
         .then()
         .scale(
-          begin: const Offset(1.05, 1.05),
-          end: const Offset(1.0, 1.0),
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeInOut,
-        );
+      begin: const Offset(1.05, 1.05),
+      end: const Offset(1.0, 1.0),
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeInOut,
+    );
   }
 }
