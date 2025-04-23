@@ -710,7 +710,7 @@ class _CartScreenState extends State<CartScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Lottie.asset(
-            'assets/images/cartEmpty2.json',
+            'assets/images/cart- 1745364559641.json',
             width: 200.w,
             height: 200.h,
             fit: BoxFit.contain,
@@ -733,30 +733,7 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
           SizedBox(height: 20.h),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(
-                context,
-                HomeScreen.routName,
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: MyTheme.orangeColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 8.h),
-              elevation: 5,
-              shadowColor: MyTheme.orangeColor.withOpacity(0.4),
-            ),
-            child: Text(
-              'Start Shopping',
-              style: MyTheme.lightTheme.textTheme.displayMedium?.copyWith(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
+
         ],
       ),
     );

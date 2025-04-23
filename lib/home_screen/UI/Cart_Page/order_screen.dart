@@ -534,7 +534,7 @@ class _OrderScreenState extends State<OrderScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Lottie.asset(
-            'assets/images/empty_orders.json', // استبدلي بمسار الـ animation المناسب
+            'assets/images/order- 1745364975821.json',
             width: 200.w,
             height: 200.h,
             fit: BoxFit.contain,

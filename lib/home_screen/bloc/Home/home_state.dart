@@ -5,7 +5,7 @@ import 'package:graduation_project/home_screen/data/model/offers_model_response/
 import 'package:graduation_project/home_screen/data/model/services_model_response/service_model.dart';
 import 'package:graduation_project/home_screen/data/model/topSelling_model_response/TopSellinModelResponse.dart';
 import 'package:graduation_project/home_screen/data/model/search_model_response/SearchModelResponse.dart'
-    as search; // Alias
+as search; // Alias
 
 abstract class HomeState {}
 
@@ -17,7 +17,12 @@ class FetchLoadingHomeDataState extends HomeState {}
 class FetchSuccessHomeDataState extends HomeState {
   final List<Categorydatum> categories;
   final List<ItemModel> items;
-  FetchSuccessHomeDataState({required this.categories, required this.items});
+  final List<TopSellingData> topSelling; // أضفنا topSelling
+  FetchSuccessHomeDataState({
+    required this.categories,
+    required this.items,
+    required this.topSelling,
+  });
 }
 
 class HomeErrorState extends HomeState {
@@ -59,12 +64,22 @@ class FetchCategoriesSuccessState extends HomeState {
   FetchCategoriesSuccessState({required this.categories});
 }
 
+class FetchCategoriesErrorState extends HomeState {
+  final String message;
+  FetchCategoriesErrorState({required this.message});
+}
+
 // Fetch Discounted Items
 class FetchDiscountItemsLoadingState extends HomeState {}
 
 class FetchDiscountItemsSuccessState extends HomeState {
   final List<ItemModel> items;
   FetchDiscountItemsSuccessState({required this.items});
+}
+
+class FetchDiscountItemsErrorState extends HomeState {
+  final String message;
+  FetchDiscountItemsErrorState({required this.message});
 }
 
 // Fetch Services By Category
@@ -93,12 +108,12 @@ class FetchServiceItemsErrorState extends HomeState {
   FetchServiceItemsErrorState({required this.message});
 }
 
-// الـ States الجديدة للسيرش
+// Search States
 class FetchSearchLoadingState extends HomeState {}
 
 class FetchSearchSuccessState extends HomeState {
-  final List<search.Data> services; // الخدمات
-  final List<search.ItemData> items; // العناصر
+  final List<search.Data> services;
+  final List<search.ItemData> items;
   FetchSearchSuccessState({required this.services, required this.items});
 }
 

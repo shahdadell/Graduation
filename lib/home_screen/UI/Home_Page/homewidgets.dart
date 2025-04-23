@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graduation_project/Theme/theme.dart';
 import 'package:graduation_project/app_images/app_images.dart';
-import 'package:graduation_project/home_screen/UI/Cart_Page/CartScreen.dart';
 import 'package:graduation_project/Theme/style.dart';
 import 'package:graduation_project/home_screen/UI/Home_Page/homevariables.dart';
+import 'package:graduation_project/home_screen/UI/Notification_Page/notification_screen.dart';
 import 'package:graduation_project/local_data/shared_preference.dart';
 import '../../../Profile_screen/UI/Profile/profile_screen.dart';
-import '../../bloc/Cart/cart_bloc.dart';
-import '../../bloc/Cart/cart_event.dart';
-import '../../bloc/Cart/cart_state.dart';
-import '../../data/repo/cart_repo.dart';
 
 Widget homeTopBar(BuildContext context) {
   String greeting = getGreetingMessage();
@@ -23,8 +17,10 @@ Widget homeTopBar(BuildContext context) {
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
       InkWell(
-        onTap: () {},
-        overlayColor: WidgetStatePropertyAll(MyTheme.transparent),
+        onTap: () {
+          Navigator.pushNamed(context, NotificationScreen.routeName); // التنقل لصفحة الإشعارات
+        },
+        overlayColor:  WidgetStatePropertyAll(MyTheme.transparent),
         child: Icon(
           IconlyLight.notification,
           size: 24,
@@ -69,7 +65,7 @@ Widget homeTopBar(BuildContext context) {
                       return const Text('Loading...');
                     }
                     String displayName =
-                    userId == null ? "" : (snapshot.data ?? "Guest");
+                        userId == null ? "" : (snapshot.data ?? "Guest");
                     return SizedBox(
                       width: 142,
                       child: Text(
@@ -102,7 +98,7 @@ Widget homeTopBar(BuildContext context) {
         onTap: () {
           if (userId == null) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Please log in to view your profile')),
+              const SnackBar(content: Text('من فضلك سجل الدخول لعرض ملفك الشخصي')),
             );
           } else {
             Navigator.push(
@@ -111,7 +107,7 @@ Widget homeTopBar(BuildContext context) {
             );
           }
         },
-        overlayColor: WidgetStatePropertyAll(MyTheme.transparent),
+        overlayColor:  WidgetStatePropertyAll(MyTheme.transparent),
         child: Icon(
           IconlyLight.profile,
           size: 24,

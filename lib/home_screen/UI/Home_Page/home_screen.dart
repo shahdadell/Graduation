@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/home_screen/UI/TopBarWidget/TopBarWidget.dart';
 import 'package:graduation_project/home_screen/bloc/Home/home_bloc.dart';
 import 'package:graduation_project/home_screen/bloc/Home/home_event.dart';
+import 'package:graduation_project/home_screen/bloc/Home/home_state.dart';
 import '../CategoriesGridWidget/CategoriesGridWidget.dart';
 import '../DiscountListWidget/DiscountListWidget.dart';
 import '../SearchFieldWidget/SearchFieldWidget.dart';
@@ -26,8 +27,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    // Fetch data immediately when the screen loads
+    context.read<HomeBloc>().add(FetchHomeDataEvent(null));
+    context.read<HomeBloc>().add(FetchTopSellingEvent()); // احتياطي
     _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
-      setState(() {});
+      if (kDebugMode) {
+        print("Timer: Refreshing home data");
+      }
+      context.read<HomeBloc>().add(FetchHomeDataEvent(null));
+      context.read<HomeBloc>().add(FetchTopSellingEvent()); // احتياطي
     });
   }
 
@@ -39,22 +47,26 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        final bloc = HomeBloc();
-        if (kDebugMode) {
-          print("Adding FetchHomeDataEvent");
+    return BlocListener<HomeBloc, HomeState>(
+      listener: (context, state) {
+        String? errorMessage;
+        if (state is HomeErrorState) {
+          errorMessage = state.message;
+        } else if (state is FetchOffersErrorState) {
+          errorMessage = state.message;
+        } else if (state is FetchTopSellingErrorState) {
+          errorMessage = state.message;
+        } else if (state is FetchCategoriesErrorState) {
+          errorMessage = state.message;
+        } else if (state is FetchDiscountItemsErrorState) {
+          errorMessage = state.message;
         }
-        bloc.add(FetchHomeDataEvent(null));
-        if (kDebugMode) {
-          print("Adding FetchTopSellingEvent");
+
+        if (errorMessage != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: $errorMessage')),
+          );
         }
-        bloc.add(FetchTopSellingEvent());
-        if (kDebugMode) {
-          print("Adding FetchOffersEvent");
-        }
-        bloc.add(FetchOffersEvent());
-        return bloc;
       },
       child: Scaffold(
         body: Container(
@@ -71,15 +83,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const TopBarWidget(),
-                  const SearchFieldWidget(
-                    isClickable: true, // هنا بنخليه ينقل لـ SearchScreen
-                  ),
+                  const SearchFieldWidget(isClickable: true),
                   SizedBox(height: 10.h),
                   const SpecialOfferCarouselWidget(),
                   SizedBox(height: 15.h),
                   const CategoriesGridWidget(),
                   SizedBox(height: 15.h),
                   const DiscountListWidget(),
+                  SizedBox(height: 10.h),
                   const TopSellingListWidget(),
                   SizedBox(height: 15.h),
                 ],
